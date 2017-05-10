@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "784127883251",
+    "firebase_url": "https://lungupfinal.firebaseio.com",
+    "project_id": "lungupfinal",
+    "storage_bucket": "lungupfinal.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:784127883251:android:b61e32b734a67fa2",
+        "android_client_info": {
+          "package_name": "com.example.idan.lungupfinal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "784127883251-kopao3a2a8d1q0m9s37i0mi17inmcq5d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.idan.lungupfinal",
+            "certificate_hash": "305bc7af285d4bfb7453362ede2856d2328883ce"
+          }
+        },
+        {
+          "client_id": "784127883251-1686gj1vv1jrp922abj3j4ihn07d25hd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCT3qFZNZNOdfYLd-6lq_9XFLJ3qz_7sGo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "784127883251-1686gj1vv1jrp922abj3j4ihn07d25hd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

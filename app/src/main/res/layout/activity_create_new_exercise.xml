@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_general">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            layout="@layout/view_header"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginTop="20dp"
+                android:hint="Exercise Name"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/et_nExercise_name"/>
+            <EditText
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:inputType="textMultiLine"
+
+                android:id="@+id/et_nExercise_Description"
+                android:hint="Description"
+                android:background="#66ffffff"/>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp">
+
+            <Button
+            android:text="Upload Media"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_nExercise_uploadImage"
+            android:layout_centerHorizontal="true" />
+
+            <ProgressBar
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/progressBar2"
+            android:layout_toRightOf="@id/btn_nExercise_uploadImage"
+            android:layout_marginStart="5dp" />
+
+        </RelativeLayout>
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btn_nExercise_uploadImage"
+            android:layout_marginTop="15dp"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/rgroup_nExercise">
+
+            <RadioButton
+                android:id="@+id/rb_nExercise_public"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:text="Public" />
+
+            <RadioButton
+                android:id="@+id/rb_nExercise_private"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:text="Private" />
+
+            />
+        </RadioGroup>
+
+        <Button
+            android:text="Submit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_nExercise_submit"
+            android:layout_marginTop="50dp"
+            android:layout_gravity="center_horizontal" />
+
+
+
+
+
+    </LinearLayout>
+</ScrollView>

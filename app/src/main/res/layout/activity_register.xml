@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_general">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sign_up"
+            android:textSize="18dp"
+            android:textColor="#949494"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="4dp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/biglogo"
+            android:layout_marginTop="10dp"
+            android:id="@+id/imageView4" />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="User"
+                android:textSize="20dp"
+                android:textColor="#4b5bb0"
+                android:paddingRight="10dp"
+                android:id="@+id/tv_user_switcher"
+                />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/switch_register"
+                android:layout_toRightOf="@id/tv_user_switcher"
+                android:gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:theme="@style/MySwitch"
+                android:checked="false"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Care Giver"
+                android:textColor="#4b5bb0"
+                android:paddingLeft="10dp"
+                android:textSize="20dp"
+                android:layout_toRightOf="@id/switch_register"
+                />
+
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:layout_marginTop="3dp">
+
+            <EditText
+                android:drawableLeft="@drawable/person_icon"
+                android:width="300dp"
+                android:drawablePadding="10dp"
+                android:paddingLeft="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:hint="Name"
+                android:textColorHint="#4b5bb0"
+                android:textColor="#4b5bb0"
+                android:id="@+id/et_name"
+                />
+            <EditText
+                android:drawableLeft="@drawable/mail_icon"
+                android:width="300dp"
+                android:drawablePadding="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:hint="E-Mail"
+                android:textColorHint="#4b5bb0"
+                android:textColor="#4b5bb0"
+                android:id="@+id/et_username"
+                />
+
+            <EditText
+                android:paddingLeft="8dp"
+                android:drawableLeft="@drawable/password_icon"
+                android:drawablePadding="13dp"
+                android:width="300dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Password"
+                android:textColorHint="#4b5bb0"
+                android:textColor="#4b5bb0"
+                android:id="@+id/et_password"
+                />
+            <EditText
+                android:paddingLeft="8dp"
+                android:drawableLeft="@drawable/password_icon"
+                android:drawablePadding="13dp"
+                android:width="300dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Confirm Password"
+                android:textColor="#4b5bb0"
+                android:textColorHint="#4b5bb0"
+                android:id="@+id/et_c_password"
+                />
+
+
+        </LinearLayout>
+
+        <ImageButton
+            android:layout_gravity="center"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_signup"
+            android:background="@null"
+            android:paddingTop="10dp"
+            android:src="@drawable/btn_create_account"/>
+        <TextView
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:textColor="#4b5bb0"
+            android:text="Already have an account?"/>
+        <TextView
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:text="LOG IN"
+            android:textStyle="bold"
+            android:textColor="#4b5bb0"
+            android:id="@+id/tv_register"
+            android:paddingBottom="10dp"/>
+
+
+
+    </LinearLayout>
+</ScrollView>

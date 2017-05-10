@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">LungUpFinal</string>
+    <string name="logout">logOut</string>
+    <string name="caregiver_menu">Care Givers Menu</string>
+    <string name="sign_in">Sign In</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="qr_info">For fast access scan the Qr-Code with Patient device</string>
+    <string name="spinner_desc">
+    In this exercise your goal is to exhale as long as you can and spin the windvane.\nTry to perform few sessions before leaving.
+    </string>
+
+</resources>

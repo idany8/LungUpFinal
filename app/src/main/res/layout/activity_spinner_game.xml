@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_general">
+
+
+
+    <include
+        layout="@layout/view_header"/>
+
+    <TextView
+        android:id="@+id/tv_spinner_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="WindVane Spinner"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:textColor="#5668b5"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="3dp" />
+    <TextView
+        android:id="@+id/tv_spinner_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/spinner_desc"
+        android:textAlignment="center"
+        android:textSize="11dp"
+        android:background="#e3e6eb"
+        android:textStyle="bold"
+        android:textColor="#6777bb"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="3dp" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:gravity="center_horizontal">
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:src="@drawable/windwave"
+            android:layout_marginTop="10dp"
+             />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="7s\nMax"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:id="@+id/textView3" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="7s\nAvg"
+            android:layout_marginLeft="5dp"
+            android:id="@+id/textView4"
+            android:layout_alignParentBottom="true"
+            android:layout_toEndOf="@+id/textView3" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="7s"
+            android:textSize="40dp"
+            android:textColor="#0e2cc1"
+            android:id="@+id/textView2"
+            android:gravity="center_horizontal"
+            android:layout_alignParentBottom="true"
+            android:layout_alignEnd="@+id/imageView1" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Start!"
+            android:textColor="#ffffff"
+            android:background="@drawable/btn_shape"
+            android:layout_above="@+id/textView2"
+            android:layout_marginBottom="100dp"
+            android:layout_marginLeft="110dp"/>
+    </RelativeLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:indeterminate="false"
+        android:max="400"
+        android:progress="20"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="5dp">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/btn_ex_cancel"
+            android:background="@null"
+            android:paddingRight="20dp"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/btn_ex_done"
+            android:background="@null"
+            android:paddingLeft="20dp"/>
+
+
+    </LinearLayout>
+
+
+
+</LinearLayout>
