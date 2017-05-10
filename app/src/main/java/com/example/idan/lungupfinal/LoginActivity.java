@@ -25,6 +25,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -47,6 +48,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+        Log.d("FCM", "Refreshed token: " + refreshedToken);
         // Views
         // mStatusTextView = (TextView) findViewById(R.id.status);
         //  mDetailTextView = (TextView) findViewById(R.id.detail);
