@@ -1,5 +1,6 @@
 package com.example.idan.lungupfinal;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -14,10 +15,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import java.util.ArrayList;
 
-public class CaregiverMenuActivity extends AppCompatActivity {
+public class CaregiverMenuActivity extends AppCompatActivity implements View.OnClickListener {
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
     private ArrayList<String> usersList;
@@ -29,14 +32,15 @@ public class CaregiverMenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_caregivers_menu);
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        usr_name = (TextView)findViewById(R.id.user_name_tv);
+        usr_name = (TextView) findViewById(R.id.user_name_tv);
         mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                current_user= dataSnapshot.getValue(User.class);
-                Log.d("usersdata",""+current_user.getName());
+                current_user = dataSnapshot.getValue(User.class);
+                Log.d("usersdata", "" + current_user.getName());
                 usr_name.setText(current_user.getName());
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
@@ -75,19 +79,15 @@ public class CaregiverMenuActivity extends AppCompatActivity {
                         Toast.LENGTH_LONG).show();
 
 
-
-
-                final ArrayList<User> ruList= new ArrayList<User>();
-                mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        User user= dataSnapshot.getValue(User.class);
-                        Log.d("usersdata",""+user.getName());
-                        Log.d("usersdata2",""+user.getRelatedUsers());
-                        usersList = user.getRelatedUsers();
-                        //ArrayList<User> test = getRelatedUsersList(user.getRelatedUsers(), mDatabase);
-                       // Log.d("userstest", "" + test);
-
+//                final ArrayList<User> ruList= new ArrayList<User>();
+//                mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(DataSnapshot dataSnapshot) {
+//                        User user= dataSnapshot.getValue(User.class);
+//                        Log.d("usersdata",""+user.getName());
+//                        Log.d("usersdata2",""+user.getRelatedUsers());
+//                        usersList = user.getRelatedUsers();
+                //ArrayList<User> test = getRelatedUsersList(user.getRelatedUsers(), mDatabase);// Log.d("userstest", "" + test);
 //                        for (String tmpUid:usersList) {
 //                            mDatabase.child("users").child(tmpUid).addListenerForSingleValueEvent(new ValueEventListener() {
 //                                @Override
@@ -107,28 +107,18 @@ public class CaregiverMenuActivity extends AppCompatActivity {
 //                                }
 //                            });
 //                        }
-
-                        Log.d("rulistAfter", "" + ruList);
-
-
+//                        Log.d("rulistAfter", "" + ruList);
 //                        ArrayList<User> test = getRelatedUsersList(user.getRelatedUsers(),mDatabase);
 //                        Log.d("userstest",""+test);
-                    }
-                    public void onComplete(){
-
-                    }
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-
-
-
-
-
-
-                        ///
+//                    }
+//                    public void onComplete(){
+//
+//                    }
+//                    @Override
+//                    public void onCancelled(DatabaseError databaseError) {
+//
+//                    }//});
+                ///
 //                        mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
 //                            @Override
 //                            public void onDataChange(DataSnapshot dataSnapshot) {
@@ -153,12 +143,41 @@ public class CaregiverMenuActivity extends AppCompatActivity {
 
         });
 
+        findViewById(R.id.btn_assign_qr_ptn_cgmenu).setOnClickListener((View.OnClickListener) this);
+
 
     }
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if(result != null){
+            if(result.getContents()==null){
+                Toast.makeText(this, "You cancelled the scanning111", Toast.LENGTH_LONG).show();
+            }
+            else {
+                Toast.makeText(this, result.getContents(),Toast.LENGTH_LONG).show();
+                assignUsers(mAuth.getCurrentUser().getUid(),result.getContents());
 
+            }
+        }
+        else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
 
     public void onBackPressed() {
 
+    }
+    public void onClick(View view) {
+        int i = view.getId();
+        if (i== R.id.btn_assign_qr_ptn_cgmenu){
+            IntentIntegrator integrator = new IntentIntegrator(this);
+            integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);
+            integrator.setPrompt("Scan");
+            integrator.setCameraId(0);
+            integrator.setBeepEnabled(false);
+            integrator.setBarcodeImageEnabled(false);
+            integrator.initiateScan();
+        }
     }
 
     public User parseData(DataSnapshot dataSnapshot) {
@@ -172,6 +191,46 @@ public class CaregiverMenuActivity extends AppCompatActivity {
 
         }
         return user;
+    }
+    public void assignUsers(String uid1, String uid2){
+        final String firstUid = uid1;
+        final String secondUid = uid2;
+        FirebaseDatabase.getInstance().getReference().child("users").child(uid1).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Patient user1= dataSnapshot.getValue(Patient.class);
+                Log.d("usersdata",""+user1.getName());
+                Log.d("usersdata2",""+user1.getRelatedUsers());
+                ArrayList<String> uid1RU = user1.getRelatedUsers();
+                uid1RU.add(secondUid);
+                user1.setRelatedUsers(uid1RU);
+                FirebaseDatabase.getInstance().getReference().child("users").child(firstUid).setValue(user1);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        FirebaseDatabase.getInstance().getReference().child("users").child(secondUid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Patient user2= dataSnapshot.getValue(Patient.class);
+                Log.d("usersdata",""+user2.getName());
+                Log.d("usersdata2",""+user2.getRelatedUsers());
+                ArrayList<String> uid2RU = user2.getRelatedUsers();
+                uid2RU.add(firstUid);
+                user2.setRelatedUsers(uid2RU);
+                FirebaseDatabase.getInstance().getReference().child("users").child(secondUid).setValue(user2);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
 //    public ArrayList<User> getRelatedUsersList(ArrayList<String> users_id, DatabaseReference mDatabase)
