@@ -1,10 +1,12 @@
 package com.example.idan.lungupfinal;
 
+import java.io.Serializable;
+
 /**
  * Created by Idan on 17/04/2017.
  */
 
-public class Exercise {
+public class Exercise implements Serializable {
     private int id;
     private String type;
     private String exercise_name;

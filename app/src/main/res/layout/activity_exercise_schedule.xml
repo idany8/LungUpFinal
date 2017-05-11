@@ -22,7 +22,7 @@
     <ListView
         android:id="@+id/set_schedule_listview"
         android:layout_width="fill_parent"
-        android:layout_height="250dp"
+        android:layout_height="200dp"
         >
 
 
@@ -93,49 +93,63 @@
         <EditText
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:text="-"
+            android:hint="-"
             android:textAlignment="center"
             android:id="@+id/et_sch_su"
+            android:maxLength="1"
+            android:inputType="numberDecimal"
             />
         <EditText
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:text="-"
+            android:hint="-"
             android:textAlignment="center"
             android:id="@+id/et_sch_mo"
+            android:maxLength="1"
+            android:inputType="numberDecimal"
             />
         <EditText
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:text="-"
+            android:hint="-"
             android:textAlignment="center"
             android:id="@+id/et_sch_tu"
+            android:maxLength="1"
+            android:inputType="numberDecimal"
             />
         <EditText
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:text="-"
+            android:hint="-"
             android:textAlignment="center"
             android:id="@+id/et_sch_we"
+            android:maxLength="1"
+            android:inputType="numberDecimal"
             />
         <EditText
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:text="-"
+            android:hint="-"
             android:textAlignment="center"
             android:id="@+id/et_sch_th"
+            android:maxLength="1"
+            android:inputType="numberDecimal"
             />
         <EditText
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:text="-"
+            android:hint="-"
             android:textAlignment="center"
             android:id="@+id/et_sch_fr"
+            android:maxLength="1"
+            android:inputType="numberDecimal"
             />
         <EditText
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:text="-"
+            android:hint="-"
+            android:maxLength="1"
+            android:inputType="numberDecimal"
             android:textAlignment="center"
             android:id="@+id/et_sch_sa"
             />
@@ -147,27 +161,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/checkBox_sch_unlimited" />
-<RelativeLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
 
-    <EditText
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="3"
-        android:textAlignment="textEnd"
-        android:id="@+id/et_sch_everyX"
-        android:layout_toRightOf="@id/checkBox_sch_everyX"
-        />
-
-    <CheckBox
-        android:text="Every day X"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:id="@+id/checkBox_sch_everyX"
- />
-
-</RelativeLayout>
+        android:text="UPDATE"
+        android:layout_gravity="center"
+        android:id="@+id/btn_sch_update"/>
 
 </LinearLayout>
