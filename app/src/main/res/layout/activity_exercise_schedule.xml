@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_exercise_schedule"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/background_general"
+    tools:context="com.example.idan.lungupfinal.ExerciseSchedule">
+
+    <include
+        layout="@layout/view_header"/>
+
+
+    <EditText
+        android:id="@+id/set_schedule_txtsearch"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="Search"
+
+        />
+    <ListView
+        android:id="@+id/set_schedule_listview"
+        android:layout_width="fill_parent"
+        android:layout_height="250dp"
+        >
+
+
+    </ListView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:textSize="20dp"
+            android:textAlignment="center"
+            android:text="Su"
+            />
+        <TextView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:textSize="20dp"
+            android:textAlignment="center"
+            android:text="Mo"
+            />
+        <TextView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:textSize="20dp"
+            android:textAlignment="center"
+            android:text="Tu"
+            />
+        <TextView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:textSize="20dp"
+            android:textAlignment="center"
+            android:text="We"
+            />
+        <TextView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:textSize="20dp"
+            android:textAlignment="center"
+            android:text="Th"
+            />
+        <TextView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:textSize="20dp"
+            android:textAlignment="center"
+            android:text="Fr"
+            />
+        <TextView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:textSize="20dp"
+            android:textAlignment="center"
+            android:text="Sa"
+            />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <EditText
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:text="-"
+            android:textAlignment="center"
+            android:id="@+id/et_sch_su"
+            />
+        <EditText
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:text="-"
+            android:textAlignment="center"
+            android:id="@+id/et_sch_mo"
+            />
+        <EditText
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:text="-"
+            android:textAlignment="center"
+            android:id="@+id/et_sch_tu"
+            />
+        <EditText
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:text="-"
+            android:textAlignment="center"
+            android:id="@+id/et_sch_we"
+            />
+        <EditText
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:text="-"
+            android:textAlignment="center"
+            android:id="@+id/et_sch_th"
+            />
+        <EditText
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:text="-"
+            android:textAlignment="center"
+            android:id="@+id/et_sch_fr"
+            />
+        <EditText
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:text="-"
+            android:textAlignment="center"
+            android:id="@+id/et_sch_sa"
+            />
+
+    </LinearLayout>
+
+    <CheckBox
+        android:text="Unlimited"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/checkBox_sch_unlimited" />
+<RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="3"
+        android:textAlignment="textEnd"
+        android:id="@+id/et_sch_everyX"
+        android:layout_toRightOf="@id/checkBox_sch_everyX"
+        />
+
+    <CheckBox
+        android:text="Every day X"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:id="@+id/checkBox_sch_everyX"
+ />
+
+</RelativeLayout>
+
+</LinearLayout>
