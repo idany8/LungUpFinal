@@ -75,8 +75,8 @@ public class CaregiverMenuActivity extends AppCompatActivity implements View.OnC
 
         findViewById(R.id.btn_messages_cgmenu).setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Toast.makeText(CaregiverMenuActivity.this, " " + mAuth.getCurrentUser().getUid() + " -- " + mAuth.getCurrentUser().getDisplayName(),
-                        Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(CaregiverMenuActivity.this, ChatListActivity.class);
+                startActivity(intent);
 
 
 //                final ArrayList<User> ruList= new ArrayList<User>();

@@ -45,6 +45,7 @@ private String patUid;
             Bundle extras = getIntent().getExtras();
             if (extras == null) {
                 patUid = null;
+                Log.d("checkerror", "its null");
             } else {
                 patUid = extras.getString("PATIENT_UID");
             }
@@ -66,6 +67,14 @@ private String patUid;
                     recyclerView.setItemAnimator(new DefaultItemAnimator());
                     recyclerView.setAdapter(adapter);
 
+                }else {
+                    Log.d("checkerror", "nothing in user EL ");
+                    ArrayList<P_Exercise> loggedUsrEL = new ArrayList<P_Exercise>();
+                    adapter = new ExerciseAdapter(loggedUsrEL,loggedPat);
+                    RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+                    recyclerView.setLayoutManager(mLayoutManager);
+                    recyclerView.setItemAnimator(new DefaultItemAnimator());
+                    recyclerView.setAdapter(adapter);
                 }
 //
 //                Log.d("userslisttest2", "" + exercisesArray);

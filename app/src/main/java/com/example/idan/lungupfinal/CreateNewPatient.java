@@ -106,18 +106,24 @@ public class CreateNewPatient extends AppCompatActivity {
                             new_user_uid = mAuth2.getCurrentUser().getUid().toString();
                             ArrayList<String> newUsrRu = new ArrayList<String>();
                             newUsrRu.add(mAuth1.getCurrentUser().getUid().toString());
-                            User createdUser = new User(inputEmail.getText().toString(),inputName.getText().toString(),"PT",new_user_uid,false,newUsrRu);
+                            final User createdUser = new User(inputEmail.getText().toString(),inputName.getText().toString(),"PT",new_user_uid,false,newUsrRu);
+
+
+
 
                             FirebaseDatabase.getInstance().getReference().child("users").child(mAuth1.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
-                                    User user= dataSnapshot.getValue(User.class);
+                                    User user = dataSnapshot.getValue(User.class);
                                     Log.d("usersdata",""+user.getName());
                                     Log.d("usersdata2",""+user.getRelatedUsers());
                                     ArrayList<String> loggedUsrRu = user.getRelatedUsers();
                                     loggedUsrRu.add(new_user_uid);
                                     user.setRelatedUsers(loggedUsrRu);
                                     FirebaseDatabase.getInstance().getReference().child("users").child(mAuth1.getCurrentUser().getUid()).setValue(user);
+                                    FirebaseDatabase.getInstance().getReference().child("chats").child(mAuth1.getCurrentUser().getUid()).child(new_user_uid).setValue(new Chat(createdUser.getName()));
+                                    FirebaseDatabase.getInstance().getReference().child("chats").child(new_user_uid).child(mAuth1.getCurrentUser().getUid()).setValue(new Chat(user.getName()));
                                 }
 
                                 @Override

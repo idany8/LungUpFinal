@@ -135,8 +135,8 @@ public class PatientMenuActivity extends AppCompatActivity {
 
         findViewById(R.id.btn_messages_ptm).setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-//                Intent intent = new Intent(PatientMenuActivity.this, CreateNewExerciseActivity.class);
-//                startActivity(intent);
+                Intent intent = new Intent(PatientMenuActivity.this, ChatListActivity.class);
+                startActivity(intent);
             }
         });
         findViewById(R.id.btn_settings_ptm).setOnClickListener(new View.OnClickListener() {
