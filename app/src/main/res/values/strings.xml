@@ -8,5 +8,6 @@
     <string name="spinner_desc">
     In this exercise your goal is to exhale as long as you can and spin the windvane.\nTry to perform few sessions before leaving.
     </string>
+    <string name="msg_mic_error">Sorry, Unable to open MIC !!</string>
 
 </resources>

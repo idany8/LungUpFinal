@@ -72,6 +72,6 @@ public class P_Exercise extends Exercise implements Serializable {
 
     @Override
     public String toString() {
-        return ""+getExercise_name() +" "+ getFormattedSchedule() ;
+        return ""+getExercise_name() ;
     }
 }

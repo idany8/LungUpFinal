@@ -33,6 +33,7 @@ public class CaregiverMenuActivity extends AppCompatActivity implements View.OnC
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
         usr_name = (TextView) findViewById(R.id.user_name_tv);
+
         mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -199,30 +200,35 @@ public class CaregiverMenuActivity extends AppCompatActivity implements View.OnC
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Patient user1= dataSnapshot.getValue(Patient.class);
-                Log.d("usersdata",""+user1.getName());
-                Log.d("usersdata2",""+user1.getRelatedUsers());
                 ArrayList<String> uid1RU = user1.getRelatedUsers();
-                uid1RU.add(secondUid);
-                user1.setRelatedUsers(uid1RU);
-                FirebaseDatabase.getInstance().getReference().child("users").child(firstUid).setValue(user1);
+                if (uid1RU.contains(secondUid)){
+                    Toast.makeText(CaregiverMenuActivity.this, "Users already assigned", Toast.LENGTH_LONG).show();
+                }else{
+                    uid1RU.add(secondUid);
+                    user1.setRelatedUsers(uid1RU);
+                    FirebaseDatabase.getInstance().getReference().child("users").child(firstUid).setValue(user1);
 
-            }
 
+                    FirebaseDatabase.getInstance().getReference().child("chats").child(secondUid).child(firstUid).setValue(new Chat(user1.getName()));
+                }
+                            }
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
         });
+
         FirebaseDatabase.getInstance().getReference().child("users").child(secondUid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Patient user2= dataSnapshot.getValue(Patient.class);
-                Log.d("usersdata",""+user2.getName());
-                Log.d("usersdata2",""+user2.getRelatedUsers());
                 ArrayList<String> uid2RU = user2.getRelatedUsers();
-                uid2RU.add(firstUid);
-                user2.setRelatedUsers(uid2RU);
-                FirebaseDatabase.getInstance().getReference().child("users").child(secondUid).setValue(user2);
+                if (!uid2RU.contains(firstUid)) {
+                    uid2RU.add(firstUid);
+                    user2.setRelatedUsers(uid2RU);
+                    FirebaseDatabase.getInstance().getReference().child("users").child(secondUid).setValue(user2);
+                    FirebaseDatabase.getInstance().getReference().child("chats").child(firstUid).child(secondUid).setValue(new Chat(user2.getName()));
+                }
             }
 
             @Override

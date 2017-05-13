@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -27,16 +28,14 @@ import java.util.Arrays;
 public class ExerciseSchedule extends AppCompatActivity {
     String[] items;
 
-    ArrayList<String> listItems;
-
-    ArrayAdapter<String> adapter;
-
+    ArrayList<P_Exercise> listItems;
+    ArrayAdapter<P_Exercise> adapter;
     ListView listView;
-
     EditText searchEt;
-    ArrayList<Exercise> exercisesList ;
+    ArrayList<P_Exercise> exercisesList ;
     Button updateBtn;
     CheckBox cbUnlimited;
+    P_Exercise selectedExercise;
     EditText et_su,et_mo,et_tu,et_we,et_th,et_fr,et_sa;
 
     @Override
@@ -45,14 +44,27 @@ public class ExerciseSchedule extends AppCompatActivity {
         setContentView(R.layout.activity_exercise_schedule);
 
         listView=(ListView)findViewById(R.id.set_schedule_listview);
+        listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.d("listview", ""+ adapter.getItem(i));
+                selectedExercise = adapter.getItem(i);
+
+            }
+        });
+
         findViewById(R.id.btn_sch_update).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if ( (validateDays("empty")) || (validateDays("unlimited")) ) {
                     int resultCode = 1;
                     Intent resultIntent = new Intent();
-                    P_Exercise pExToReturn = new P_Exercise(54545, "normal", "returned", "returned desc", null, "me", "fdsfds43", false, getSchedule());
-                    resultIntent.putExtra("SCHEDULED_EXERCISE", pExToReturn);
+                    //P_Exercise pExToReturn = new P_Exercise(54545, "normal", "returned", "returned desc", null, "me", "fdsfds43", false, getSchedule());
+                    if (selectedExercise==null) return;
+                    selectedExercise.setSchedule(getSchedule());
+                    resultIntent.putExtra("SCHEDULED_EXERCISE", selectedExercise);
                     setResult(resultCode, resultIntent);
                     finish();
                 }
@@ -100,39 +112,46 @@ public class ExerciseSchedule extends AppCompatActivity {
 
     }
 
+    public void onBackPressed(){
+        int resultCode = 3;
+        Intent resultIntent = new Intent();
+        setResult(resultCode, resultIntent);
+        finish();
 
-
-    public void searchItem(String textToSearch){
-        for(String item:items){
-            if(!item.contains(textToSearch)){
-                listItems.remove(item);
-            }
-        }
-        adapter.notifyDataSetChanged();
     }
 
+
+    public void searchItem(String textToSearch) {
+       // for (String item : listItems) {
+            for (int i = 0; i < listItems.size(); i++) {
+                if (!listItems.get(i).getExercise_name().contains(textToSearch)) {
+                    listItems.remove(i);
+                }
+            }
+            adapter.notifyDataSetChanged();
+        }
+   // }
     public void initList(){
 
-        items=new String[]{"Canada","China","Japan","USA"};
+       // items=new String[]{"Canada","China","Japan","USA"};
 
-        listItems=new ArrayList<>(Arrays.asList(items));
-
-        adapter=new ArrayAdapter<String>(this,
-                R.layout.list_item, R.id.txtitem, listItems);
-
-
-        listView.setAdapter(adapter);
-
+      //  listItems=new ArrayList<>(Arrays.asList(items));
 
         FirebaseDatabase.getInstance().getReference().child("exercises").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                exercisesList = new ArrayList<Exercise>();
+                exercisesList = new ArrayList<P_Exercise>();
                 for(DataSnapshot child: dataSnapshot.getChildren()) {
-                   exercisesList.add(child.getValue(Exercise.class));
-                    }
-                Log.d("exlist", ""+exercisesList);
+                    exercisesList.add(child.getValue(P_Exercise.class));
                 }
+                Log.d("exlist", ""+exercisesList);
+
+                adapter=new ArrayAdapter<P_Exercise>(ExerciseSchedule.this,
+                        R.layout.list_item, R.id.txtitem, exercisesList);
+
+
+                listView.setAdapter(adapter);
+            }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -142,6 +161,24 @@ public class ExerciseSchedule extends AppCompatActivity {
 
 
         });
+
+        listItems=new ArrayList<P_Exercise>();
+        listItems.add(new P_Exercise(2332,"sdsdd","exercisename1","Description1","","authorName1","fdsfsf",false,"2uduasu2"));
+        listItems.add(new P_Exercise(4546512,"sdsdd","exercisename2","Description2","","authorName2","fdsfsf",false,"2uduasu2"));
+        listItems.add(new P_Exercise(454532,"sdsdd","exercisename3","Description3","","authorName3","fdsfsf",false,"2uduasu2"));
+        listItems.add(new P_Exercise(89452,"sdsdd","exercisename4","Description4","","authorName4","fdsfsf",false,"2uduasu2"));
+        listItems.add(new P_Exercise(74512,"sdsdd","exercisename5","Description5","","authorName5","fdsfsf",false,"2uduasu2"));
+
+
+
+//        adapter=new ArrayAdapter<P_Exercise>(this,
+//                R.layout.list_item, R.id.txtitem, exercisesList);
+//
+//
+//        listView.setAdapter(adapter);
+
+
+
 
     }
     public void initEtDays(){

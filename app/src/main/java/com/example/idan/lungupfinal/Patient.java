@@ -7,7 +7,7 @@ import java.util.ArrayList;
  */
 
 public class Patient extends User {
-    ArrayList<P_Exercise> p_exercises;
+    ArrayList<P_Exercise> p_exercises = new ArrayList<P_Exercise>();
 
     public Patient() {
     }
@@ -22,6 +22,7 @@ public class Patient extends User {
     }
 
     public ArrayList<P_Exercise> getP_exercises() {
+
         return p_exercises;
     }
 

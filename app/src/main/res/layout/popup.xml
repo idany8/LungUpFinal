@@ -11,15 +11,10 @@
         android:layout_margin="1dp"
         android:background="@android:color/darker_gray">
         >
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_margin="20dp">
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="It's a PopupWindow" />
+                android:text="Scan with Caregiver Device" />
 
             <ImageView
                 android:layout_width="fill_parent"
@@ -27,11 +22,5 @@
                 android:id="@+id/qr_popup_image"
                 android:src="@drawable/ic_launcher" />
 
-            <Button
-                android:id="@+id/dismiss"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="Dismiss" />
         </LinearLayout>
-    </LinearLayout>
 </LinearLayout>

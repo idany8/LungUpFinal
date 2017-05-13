@@ -31,7 +31,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ExercisesPlanActivity extends AppCompatActivity {
-    public final static int REQ_CODE_CHILD = 1;
+    public final static int REQ_CODE_OK = 1;
+    public final static int REQ_CODE_CANCEL = 3;
 private String patUid;
     ExerciseAdapter adapter;
     @Override
@@ -114,7 +115,7 @@ private String patUid;
             public void onClick(View v) {
 
                 Intent child = new Intent(ExercisesPlanActivity.this, ExerciseSchedule.class);
-                startActivityForResult(child, REQ_CODE_CHILD);
+                startActivityForResult(child, REQ_CODE_OK);
 
 //                P_Exercise p_ex1 = new P_Exercise(54545,"normal","the best","this is the best",null,"me","fdsfds43",false,"S2M2T2W2T2F2S2");
 //                adapter.addItem(p_ex1);
@@ -123,9 +124,15 @@ private String patUid;
 
     }
     protected void onActivityResult (int requestCode, int resultCode, Intent data) {
-        if(requestCode == REQ_CODE_CHILD) {
-            P_Exercise returnedExercise = (P_Exercise) data.getExtras().getSerializable("SCHEDULED_EXERCISE");
-            adapter.addItem(returnedExercise);
+        if (requestCode==1) {
+            if (resultCode == REQ_CODE_OK) {
+                P_Exercise returnedExercise = (P_Exercise) data.getExtras().getSerializable("SCHEDULED_EXERCISE");
+                adapter.addItem(returnedExercise);
+            }
+            if (resultCode == REQ_CODE_CANCEL) {
+                Log.d("oaoa", "in");
+            }
+
         }
 
     }
