@@ -13,9 +13,7 @@
         </intent-filter>
     </service>
 
-
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-
 
     <application
         android:allowBackup="true"
@@ -51,15 +49,18 @@
         <activity android:name=".PerformCustomExercise" />
         <activity android:name=".SpinnerGame" />
         <activity android:name=".ExerciseSchedule" />
-
         <activity android:name=".soundmeter.GameActivity" />
-
         <activity android:name=".ChatActivity" />
-        <activity android:name=".ChatListActivity"></activity><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
-     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+        <activity android:name=".ChatListActivity" />
+        <!--
+ ATTENTION: This was auto-generated to add Google Play services to your project for
+     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
+        -->
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
+        <activity android:name=".PatientExercisesList"></activity>
     </application>
 
 </manifest>

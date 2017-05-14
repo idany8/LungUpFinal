@@ -65,6 +65,7 @@ public class CreateNewExerciseActivity extends AppCompatActivity {
                     isPrivate = false;
                 }
                 Log.d("checked button",""+ isPrivate);
+
                 Exercise newExercise = new Exercise((int)(System.currentTimeMillis()),"type",mExersiceName.getText().toString(),mDescription.getText().toString(),
                         imagePath,mAuth.getCurrentUser().getEmail(),mAuth.getCurrentUser().getUid(),isPrivate);
 

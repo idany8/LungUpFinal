@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class P_Exercise extends Exercise implements Serializable {
 
     private String schedule;
-    private ArrayList<PerfUnit> records;
+    private ArrayList<PerfUnit> records = new ArrayList<PerfUnit>();
 
     public P_Exercise(){}
 
@@ -29,6 +29,11 @@ public class P_Exercise extends Exercise implements Serializable {
 
     public void setRecords(ArrayList<PerfUnit> records) {
         this.records = records;
+    }
+
+    public void addRecords(PerfUnit pf) {
+        this.records = records;
+        this.records.add(pf);
     }
 
     public P_Exercise(String schedule, ArrayList<PerfUnit> records) {

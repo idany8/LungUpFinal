@@ -8,10 +8,10 @@ import java.util.Date;
 
 public class PerfUnit {
 
-    private Date time;
+    private long time;
     private double Score;
 
-    public PerfUnit(Date time, double score) {
+    public PerfUnit(long time, double score) {
         this.time = time;
         Score = score;
     }
@@ -19,15 +19,15 @@ public class PerfUnit {
     public PerfUnit() {
     }
 
-    public PerfUnit(Date time) {
+    public PerfUnit(long time) {
         this.time = time;
     }
 
-    public Date getTime() {
+    public long getTime() {
         return time;
     }
 
-    public void setTime(Date time) {
+    public void setTime(long time) {
         this.time = time;
     }
 

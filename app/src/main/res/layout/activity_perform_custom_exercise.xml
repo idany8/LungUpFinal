@@ -16,7 +16,7 @@
             layout="@layout/view_header"/>
 
         <TextView
-            android:id="@+id/tv_c_exercise_header"
+            android:id="@+id/tv_cex_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Exercise name"
@@ -26,7 +26,7 @@
             android:layout_marginTop="10dp" />
 
         <TextView
-            android:id="@+id/tv_cex_description"
+            android:id="@+id/tv_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Description"
@@ -37,14 +37,16 @@
 
         <TextView
             android:layout_width="match_parent"
+
             android:layout_height="200dp"
-            android:background="#AAffffff"/>
+            android:background="#AAffffff"
+            android:id="@+id/tv_cex_description" />
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="100dp"
             app:srcCompat="@drawable/plus"
-            android:id="@+id/imageView5" />
+            android:id="@+id/img_cex" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -57,6 +59,7 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/btn_ex_cancel"
                 android:background="@null"
+                android:id="@+id/btn_cex_cancel"
                 android:paddingRight="20dp"/>
 
             <ImageButton
@@ -64,6 +67,7 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/btn_ex_done"
                 android:background="@null"
+                android:id="@+id/btn_cex_done"
                 android:paddingLeft="20dp"/>
 
 
