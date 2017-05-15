@@ -4,12 +4,16 @@ import android.Manifest;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -40,6 +44,7 @@ public class GameActivity extends AppCompatActivity {
     final long TIME_BETWEEN_SAMPLE = 50L;
     int testCounter = 0;
     int userInitialValue;
+    long userInitialTime;
     private TextView txt_sound_level;
     private TextView txt_score;
     private TextView txt_username;
@@ -118,9 +123,18 @@ public class GameActivity extends AppCompatActivity {
         checkMicPermission();
 
 
+        userInitialValue = msp.getIntFromSharedPrefernces("MIC_INIT_VALUE", -1);
+        userInitialTime = msp.getLongFromSharedPreferences("MIC_INIT_DATE",-1);
+        if (userInitialValue!=-1){
+            if (userInitialTime!=-1){
+                if (userInitialTime-System.currentTimeMillis() > 1000*60*60*24) {
+                    alertDialog("Your last microphone initialization is expired. please initial again.");
+                }
+            }
+        }else alertDialog("Please initial your microphone first");
 
-
-        userInitialValue = 5000;
+        Log.d("micInit", ""+userInitialValue );
+       // userInitialValue = 5000;
        // userInitialValue = calculateMicValues(tmp);
 
         txt_sound_level = (TextView) findViewById(R.id.txt_sound_level);
@@ -210,7 +224,7 @@ private void startGame(final RelativeLayout container){
         IRecorderUpdateListener recorderUpdateListener = new IRecorderUpdateListener() {
             @Override
             public void onSoundUpdate(float value) {
-
+                Log.d("micInit1",""+value);
                 txt_sound_level.setText(value + " DB");
                 if ((value > userInitialValue)) {
                     checkBall(img_hit, img_miss);
@@ -327,5 +341,20 @@ private void startGame(final RelativeLayout container){
         getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
         mHeight = displaymetrics.heightPixels;
         mWidth = displaymetrics.widthPixels;
+    }
+
+    void alertDialog(String message)
+    {
+        new AlertDialog.Builder(this)
+                .setTitle("Initial Error")
+                .setMessage(message)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(GameActivity.this, InitActivity.class);
+                        startActivity(intent);
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 }

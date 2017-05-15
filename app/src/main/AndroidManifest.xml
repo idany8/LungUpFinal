@@ -52,6 +52,8 @@
         <activity android:name=".soundmeter.GameActivity" />
         <activity android:name=".ChatActivity" />
         <activity android:name=".ChatListActivity" />
+        <activity android:name=".soundmeter.InitActivity" />
+        <activity android:name=".soundmeter.SpinActivity" />
         <!--
  ATTENTION: This was auto-generated to add Google Play services to your project for
      App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -60,7 +62,8 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".PatientExercisesList"></activity>
+        <activity android:name=".PatientExercisesList" />
+        <activity android:name=".SettingsActivity"></activity>
     </application>
 
 </manifest>

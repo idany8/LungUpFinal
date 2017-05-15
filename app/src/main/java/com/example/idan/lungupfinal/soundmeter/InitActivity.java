@@ -58,7 +58,9 @@ private boolean flagButton=true;
 
     private void testDone() {
         //Recorder.getInstance(InitActivity.this).saveData(mAvgSound, mMaxSound,-9999);
-        //onBackPressed();
+        Recorder.getInstance(InitActivity.this).saveMicInitialValue(mAvgSound,mMaxSound);
+
+        onBackPressed();
     }
 
     @Override

@@ -4,9 +4,13 @@ package com.example.idan.lungupfinal.soundmeter;
  * Created by Idan on 14/11/2016.
  */
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -27,6 +31,7 @@ public class SpinActivity extends AppCompatActivity {
     float sum_db=0;
     int count_db=0;
     int userInitialValue;
+    long userInitialTime;
     private Handler dbHandler = new Handler();
 
     private Runnable mUpdateTimer = new Runnable() {
@@ -58,6 +63,18 @@ public class SpinActivity extends AppCompatActivity {
         String tmp;
 //        tmp = msp.getStringFromSharedPrefernces("rec5", "na");
 //        userInitialValue= GameActivity.calculateMicValues(tmp);
+
+        userInitialValue = msp.getIntFromSharedPrefernces("MIC_INIT_VALUE", -1);
+        userInitialTime = msp.getLongFromSharedPreferences("MIC_INIT_DATE",-1);
+        if (userInitialValue!=-1){
+            if (userInitialTime!=-1){
+                if (userInitialTime-System.currentTimeMillis() > 1000*60*60*24) {
+                    alertDialog("Your last microphone initialization is expired. please initial again.");
+                }
+            }
+        }else alertDialog("Please initial your microphone first");
+
+        Log.d("micInit", ""+userInitialValue );
         userInitialValue = 6000;
         m_handler = new Handler();
         m_handlerTask = new Runnable() {
@@ -133,5 +150,19 @@ public class SpinActivity extends AppCompatActivity {
 
     private void initializeVariables() {
         imgview = (ImageView) findViewById(R.id.imageView1);
+    }
+    void alertDialog(String message)
+    {
+        new AlertDialog.Builder(this)
+                .setTitle("Initial Error")
+                .setMessage(message)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(SpinActivity.this, InitActivity.class);
+                        startActivity(intent);
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 }

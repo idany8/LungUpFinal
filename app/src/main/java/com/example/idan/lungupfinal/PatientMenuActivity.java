@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.idan.lungupfinal.soundmeter.GameActivity;
+import com.example.idan.lungupfinal.soundmeter.SpinActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -76,7 +77,7 @@ public class PatientMenuActivity extends AppCompatActivity {
         findViewById(R.id.btn_perform_exercise_ptm).setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                // Intent intent = new Intent(PatientMenuActivity.this, SpinnerGame.class);
-                Intent intent = new Intent(PatientMenuActivity.this,GameActivity.class);
+                Intent intent = new Intent(PatientMenuActivity.this,SpinActivity.class);
                 startActivity(intent);
             }
         });
@@ -172,6 +173,9 @@ public class PatientMenuActivity extends AppCompatActivity {
             public void onClick(View view) {
 //                Intent intent = new Intent(PatientMenuActivity.this, CreateNewExerciseActivity.class);
 //                startActivity(intent);
+                Intent i = new Intent(PatientMenuActivity.this, SettingsActivity.class);
+                i.putExtra("PATIENT_UID", mAuth.getCurrentUser().getUid());
+                startActivity(i);
             }
         });
 

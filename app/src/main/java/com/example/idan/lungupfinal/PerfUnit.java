@@ -1,5 +1,6 @@
 package com.example.idan.lungupfinal;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -10,10 +11,25 @@ public class PerfUnit {
 
     private long time;
     private double Score;
+    private String ex_name;
 
     public PerfUnit(long time, double score) {
         this.time = time;
         Score = score;
+    }
+
+    public PerfUnit(long time, double score, String ex_name) {
+        this.time = time;
+        Score = score;
+        this.ex_name = ex_name;
+    }
+
+    @Override
+    public String toString() {
+
+        String sdf = new SimpleDateFormat ("dd/MM/yyyy HH:mm:ss").format(time) ;
+        return sdf +" | " + ex_name;
+
     }
 
     public PerfUnit() {
@@ -37,6 +53,14 @@ public class PerfUnit {
 
     public void setScore(double score) {
         Score = score;
+    }
+
+    public String getEx_name() {
+        return ex_name;
+    }
+
+    public void setEx_name(String ex_name) {
+        this.ex_name = ex_name;
     }
 }
 

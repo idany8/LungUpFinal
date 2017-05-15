@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
@@ -19,13 +20,15 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 
 public class PatientSumActivity extends AppCompatActivity {
     String patUid;
     TextView patientName;
     ImageButton editExPlan, detailedPerf;
-    ListView lv_el;
+    ListView lv_el,lv_lu;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +88,8 @@ public class PatientSumActivity extends AppCompatActivity {
         editExPlan = (ImageButton) findViewById(R.id.btn_sum_edit_ex);
         detailedPerf = (ImageButton) findViewById(R.id.btn_sum_detailed_perf);
         lv_el = (ListView) findViewById(R.id.lv_sum_ep);
+
+         lv_lu = (ListView) findViewById(R.id.lv_sum_lu);
         editExPlan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -104,32 +109,57 @@ public class PatientSumActivity extends AppCompatActivity {
                 Patient reqPat = dataSnapshot.getValue(Patient.class);
                 if (reqPat.getP_exercises()!=null) {
                     ArrayList<P_Exercise> patientPExercises = reqPat.getP_exercises();
-                    // for (P_Exercise ex : loggedUsrEL)
-                    // exercisesArray.add(ex);
 
-                    //listItems=new ArrayList<>(Arrays.asList(items));
 
-                    ArrayAdapter<P_Exercise> arrAdapter =new ArrayAdapter<P_Exercise>(PatientSumActivity.this, R.layout.list_item, R.id.txtitem,patientPExercises);
+                    ArrayAdapter<P_Exercise> arrAdapter =new ArrayAdapter<P_Exercise>(PatientSumActivity.this, R.layout.list_item, R.id.txtitem, patientPExercises);
 
                     lv_el.setAdapter(arrAdapter);
-
                 }
-//
-//                Log.d("userslisttest2", "" + exercisesArray);
-//                mAdapter = new ExercisesAdapter(exercisesArray,ExercisesPlanActivity.this);
-//                recyclerView.setAdapter(mAdapter);
-
-                //final MoviesAdapter adapter = new MoviesAdapter(getMovies());
-
-
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
             }
 
         });
+
+        FirebaseDatabase.getInstance().getReference().child("users").child(patUid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Patient reqPat = dataSnapshot.getValue(Patient.class);
+                if (reqPat.getP_exercises()!=null) {
+                    ArrayList<P_Exercise> patientPExercises = reqPat.getP_exercises();
+                    //
+                    ArrayList<PerfUnit> arrPatLU = getLastUsage(patientPExercises);
+                    //
+                    ArrayAdapter<PerfUnit> arrAdapter2 =new ArrayAdapter<PerfUnit>(PatientSumActivity.this, R.layout.list_item, R.id.txtitem, arrPatLU);
+                    lv_lu.setAdapter(arrAdapter2);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+
+        });
+
+
+
+
+    }
+    public ArrayList<PerfUnit> getLastUsage (ArrayList<P_Exercise> patPExs){
+        //ArrayList<String> arrLU = new ArrayList<>();
+        ArrayList<PerfUnit> arrLU = new ArrayList<PerfUnit>();
+        for (int i=0;i < patPExs.size() ; i++ )
+        {
+            arrLU.addAll( patPExs.get(i).getRecords() );
+        }
+
+        Collections.sort(arrLU, new Comparator<PerfUnit>() {
+            @Override
+            public int compare(PerfUnit pf1, PerfUnit pf2) {
+                return (int) (pf1.getTime() - pf2.getTime());
+            }
+        });
+        return arrLU;
 
     }
 }

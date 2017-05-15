@@ -111,10 +111,29 @@ public class Recorder {
     }
 
 
+    public void saveMicInitialValue(float average, float max) {
+        MySharedPreferences msp = new MySharedPreferences(mContext);
+
+        float val;
+        if (max  > 32000)
+            val= max-8000;
+        else {
+            if (max + 8000 > 32000) {
+                val=  average - 8000;
+            } else
+                val=  max + 8000;
+        }
+
+        msp.putIntIntoSharedPrefernces("MIC_INIT_VALUE",(int)val);
+        msp.putLongIntoSharedPrefernces("MIC_INIT_DATE",System.currentTimeMillis());
+
+    }
+
     public void saveData(float average, float max, int score) {
         MySharedPreferences msp = new MySharedPreferences(mContext);
 
         if (score == -9999) {
+            //msp.putIntIntoSharedPrefernces("MIC_INIT",);
             for (int i = 2; i <= 5; i++) {
                 msp.putStringIntoSharedPrefernces("rec" + (i - 1), msp.getStringFromSharedPrefernces("rec" + (i), "na"));
             }

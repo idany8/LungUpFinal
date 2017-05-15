@@ -50,9 +50,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
         Log.d("FCM", "Refreshed token: " + refreshedToken);
-        // Views
-        // mStatusTextView = (TextView) findViewById(R.id.status);
-        //  mDetailTextView = (TextView) findViewById(R.id.detail);
         mEmailField = (EditText) findViewById(R.id.et_username);
         mPasswordField = (EditText) findViewById(R.id.et_password);
         mPasswordField.setTransformationMethod(new PasswordTransformationMethod());

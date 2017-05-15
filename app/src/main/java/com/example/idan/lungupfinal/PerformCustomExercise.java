@@ -83,7 +83,7 @@ public class PerformCustomExercise extends AppCompatActivity {
     }
 
     private void DoneExercise(){
-        pexToPerform.addRecords(new PerfUnit(System.currentTimeMillis(),-1));
+        pexToPerform.addRecords(new PerfUnit(System.currentTimeMillis(),-1,pexToPerform.getExercise_name()));
         patArrPex.add(pexToPerform);
         FirebaseDatabase.getInstance().getReference().child("users").child(patUid).child("p_exercises").setValue(patArrPex);
     }

@@ -31,6 +31,7 @@ public class P_Exercise extends Exercise implements Serializable {
         this.records = records;
     }
 
+
     public void addRecords(PerfUnit pf) {
         this.records = records;
         this.records.add(pf);
