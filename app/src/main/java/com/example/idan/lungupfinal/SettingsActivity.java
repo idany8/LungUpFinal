@@ -1,5 +1,8 @@
 package com.example.idan.lungupfinal;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,6 +22,7 @@ import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class SettingsActivity extends AppCompatActivity {
     private TextView userName,initLastTime;
@@ -92,6 +96,28 @@ public class SettingsActivity extends AppCompatActivity {
         }else{
             initLastTime.setText(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(initDate));
         }
+
+        findViewById(R.id.btn_alaram).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               Calendar calendar = Calendar.getInstance();
+
+                calendar.set(Calendar.HOUR_OF_DAY,14);
+                calendar.set(Calendar.MINUTE,26);
+                calendar.set(Calendar.SECOND,50);
+                Intent intent = new Intent(getApplicationContext(), NotificationReciever.class);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),100,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+                AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
+                Log.d("notificationSet", "done");
+
+//                PendingIntent pintent = PendingIntent.getService(DashboardScreen.this, 0, intent, 0);
+//                AlarmManager alarm = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+//                alarm.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), 30*1000, pintent);
+
+            }
+        });
+
 
     }
 }

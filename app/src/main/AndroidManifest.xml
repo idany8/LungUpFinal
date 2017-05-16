@@ -14,6 +14,7 @@
     </service>
 
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
 
     <application
         android:allowBackup="true"
@@ -64,6 +65,7 @@
 
         <activity android:name=".PatientExercisesList" />
         <activity android:name=".SettingsActivity"></activity>
+        <receiver android:name=".NotificationReciever"/>
     </application>
 
 </manifest>
