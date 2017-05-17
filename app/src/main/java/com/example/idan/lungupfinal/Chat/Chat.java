@@ -1,4 +1,4 @@
-package com.example.idan.lungupfinal;
+package com.example.idan.lungupfinal.Chat;
 
 /**
  * Created by Idan on 12/05/2017.

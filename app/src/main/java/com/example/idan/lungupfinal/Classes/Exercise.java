@@ -1,4 +1,4 @@
-package com.example.idan.lungupfinal;
+package com.example.idan.lungupfinal.Classes;
 
 import java.io.Serializable;
 

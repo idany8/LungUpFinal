@@ -15,7 +15,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.example.idan.lungupfinal.MySharedPreferences;
+import com.example.idan.lungupfinal.Classes.MySharedPreferences;
 import com.example.idan.lungupfinal.R;
 
 public class SpinActivity extends AppCompatActivity {

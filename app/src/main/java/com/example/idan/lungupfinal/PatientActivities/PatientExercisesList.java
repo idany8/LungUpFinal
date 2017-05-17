@@ -1,4 +1,4 @@
-package com.example.idan.lungupfinal;
+package com.example.idan.lungupfinal.PatientActivities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.idan.lungupfinal.Classes.P_Exercise;
+import com.example.idan.lungupfinal.Classes.Patient;
+import com.example.idan.lungupfinal.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,8 +34,6 @@ public class PatientExercisesList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_exercises_list);
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.pat_el_recycler_view);
-
-
 
         FirebaseAuth mAuthLoggedUser = FirebaseAuth.getInstance();
         patUid =mAuthLoggedUser.getCurrentUser().getUid();
@@ -73,10 +74,6 @@ public class PatientExercisesList extends AppCompatActivity {
 
 
     }
-
-
-
-
     public class ExerciseAdapterPat extends RecyclerView.Adapter<PatientExercisesList.ExerciseAdapterPat.MyViewHolder> {
 
         private ArrayList<P_Exercise> pexList;

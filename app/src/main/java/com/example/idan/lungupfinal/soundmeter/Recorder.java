@@ -4,7 +4,7 @@ import android.content.Context;
 import android.media.MediaRecorder;
 import android.widget.Toast;
 
-import com.example.idan.lungupfinal.MySharedPreferences;
+import com.example.idan.lungupfinal.Classes.MySharedPreferences;
 import com.example.idan.lungupfinal.R;
 
 import java.io.IOException;

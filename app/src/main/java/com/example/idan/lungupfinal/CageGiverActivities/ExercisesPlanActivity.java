@@ -1,6 +1,5 @@
-package com.example.idan.lungupfinal;
+package com.example.idan.lungupfinal.CageGiverActivities;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,14 +10,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.example.idan.lungupfinal.P_Exercise;
-import com.example.idan.lungupfinal.Patient;
+import com.example.idan.lungupfinal.Classes.P_Exercise;
+import com.example.idan.lungupfinal.Classes.Patient;
 import com.example.idan.lungupfinal.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -27,8 +22,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class ExercisesPlanActivity extends AppCompatActivity {
     public final static int REQ_CODE_OK = 1;

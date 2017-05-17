@@ -1,4 +1,4 @@
-package com.example.idan.lungupfinal;
+package com.example.idan.lungupfinal.CageGiverActivities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -16,14 +16,14 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
+import com.example.idan.lungupfinal.Classes.P_Exercise;
+import com.example.idan.lungupfinal.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class ExerciseSchedule extends AppCompatActivity {
     String[] items;

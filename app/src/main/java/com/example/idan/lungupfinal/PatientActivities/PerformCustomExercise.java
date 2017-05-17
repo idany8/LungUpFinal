@@ -1,17 +1,16 @@
-package com.example.idan.lungupfinal;
+package com.example.idan.lungupfinal.PatientActivities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.idan.lungupfinal.Adapters.MyAdapter;
+import com.example.idan.lungupfinal.Classes.P_Exercise;
+import com.example.idan.lungupfinal.Classes.PerfUnit;
+import com.example.idan.lungupfinal.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

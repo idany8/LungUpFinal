@@ -1,4 +1,4 @@
-package com.example.idan.lungupfinal;
+package com.example.idan.lungupfinal.CageGiverActivities;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -7,6 +7,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import com.example.idan.lungupfinal.Adapters.MyAdapter;
+import com.example.idan.lungupfinal.Classes.User;
+import com.example.idan.lungupfinal.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -33,17 +35,6 @@ public class AssignedUsersActivity extends Activity {
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutManager);
-        // Use the default animator
-        // recyclerView.setItemAnimator(new DefaultItemAnimator());
-        // you could add item decorators
-        //	RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST);
-        //	recyclerView.addItemDecoration(itemDecoration);
-
-//        ArrayList<String> values = new ArrayList<String>();
-//        for (int i = 0; i < 100; i++) {
-//            values.add("Test" + i);
-//        }
-        //mycode
         testUsers = new ArrayList<>();
         FirebaseAuth mAuthLoggedUser = FirebaseAuth.getInstance();
         FirebaseDatabase.getInstance().getReference().child("users").child(mAuthLoggedUser.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {

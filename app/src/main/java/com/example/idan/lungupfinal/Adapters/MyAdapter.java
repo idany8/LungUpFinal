@@ -2,7 +2,6 @@ package com.example.idan.lungupfinal.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,9 +10,9 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.idan.lungupfinal.PatientSumActivity;
+import com.example.idan.lungupfinal.CageGiverActivities.PatientSumActivity;
 import com.example.idan.lungupfinal.R;
-import com.example.idan.lungupfinal.User;
+import com.example.idan.lungupfinal.Classes.User;
 
 import java.util.ArrayList;
 

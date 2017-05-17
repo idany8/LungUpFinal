@@ -11,8 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.idan.lungupfinal.ExercisesPlanActivity;
-import com.example.idan.lungupfinal.Patient;
+import com.example.idan.lungupfinal.CageGiverActivities.ExercisesPlanActivity;
+import com.example.idan.lungupfinal.Classes.Patient;
 import com.example.idan.lungupfinal.R;
 
 import java.util.ArrayList;

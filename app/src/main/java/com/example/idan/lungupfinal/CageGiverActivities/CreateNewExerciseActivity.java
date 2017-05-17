@@ -1,4 +1,4 @@
-package com.example.idan.lungupfinal;
+package com.example.idan.lungupfinal.CageGiverActivities;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -13,6 +13,8 @@ import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.example.idan.lungupfinal.Classes.Exercise;
+import com.example.idan.lungupfinal.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;

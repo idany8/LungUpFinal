@@ -1,6 +1,5 @@
-package com.example.idan.lungupfinal;
+package com.example.idan.lungupfinal.CageGiverActivities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +8,12 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.idan.lungupfinal.Chat.Chat;
+import com.example.idan.lungupfinal.Chat.ChatListActivity;
+import com.example.idan.lungupfinal.AllUsersActivities.LoginActivity;
+import com.example.idan.lungupfinal.Classes.Patient;
+import com.example.idan.lungupfinal.R;
+import com.example.idan.lungupfinal.Classes.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -79,67 +84,6 @@ public class CaregiverMenuActivity extends AppCompatActivity implements View.OnC
                 Intent intent = new Intent(CaregiverMenuActivity.this, ChatListActivity.class);
                 startActivity(intent);
 
-
-//                final ArrayList<User> ruList= new ArrayList<User>();
-//                mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(DataSnapshot dataSnapshot) {
-//                        User user= dataSnapshot.getValue(User.class);
-//                        Log.d("usersdata",""+user.getName());
-//                        Log.d("usersdata2",""+user.getRelatedUsers());
-//                        usersList = user.getRelatedUsers();
-                //ArrayList<User> test = getRelatedUsersList(user.getRelatedUsers(), mDatabase);// Log.d("userstest", "" + test);
-//                        for (String tmpUid:usersList) {
-//                            mDatabase.child("users").child(tmpUid).addListenerForSingleValueEvent(new ValueEventListener() {
-//                                @Override
-//                                public void onDataChange(DataSnapshot dataSnapshot) {
-//                                    User user = dataSnapshot.getValue(User.class);
-//                                    Log.d("usersdata3", "" + user.getName());
-//                                    Log.d("usersdata4", "" + user.getRelatedUsers());
-//                                    ruList.add(user);
-//                                    Log.d("rulist", "" + ruList);
-////                                    ArrayList<User> test = getRelatedUsersList(user.getRelatedUsers(), mDatabase);
-////                                    Log.d("userstest", "" + test);
-//                                }
-//
-//                                @Override
-//                                public void onCancelled(DatabaseError databaseError) {
-//
-//                                }
-//                            });
-//                        }
-//                        Log.d("rulistAfter", "" + ruList);
-//                        ArrayList<User> test = getRelatedUsersList(user.getRelatedUsers(),mDatabase);
-//                        Log.d("userstest",""+test);
-//                    }
-//                    public void onComplete(){
-//
-//                    }
-//                    @Override
-//                    public void onCancelled(DatabaseError databaseError) {
-//
-//                    }//});
-                ///
-//                        mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-//                            @Override
-//                            public void onDataChange(DataSnapshot dataSnapshot) {
-//
-//                                User xx = parseData(dataSnapshot);
-//                                Log.d("values", "" + xx.getEmail());
-//                                //System.out.println(xx.getEmail());
-////
-//// for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
-////                            System.out.println(userSnapshot.getKey() + ": " + userSnapshot.getValue());
-////                            //Log.d("userprint",""+xx.getName());
-////                        }
-//                            }
-//
-//                            @Override
-//                            public void onCancelled(DatabaseError databaseError) {
-//
-//                            }
-//
-//                        });
             }
 
         });
@@ -152,7 +96,7 @@ public class CaregiverMenuActivity extends AppCompatActivity implements View.OnC
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if(result != null){
             if(result.getContents()==null){
-                Toast.makeText(this, "You cancelled the scanning111", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "You cancelled the scanning", Toast.LENGTH_LONG).show();
             }
             else {
                 Toast.makeText(this, result.getContents(),Toast.LENGTH_LONG).show();

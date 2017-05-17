@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.idan.lungupfinal.ChatListActivity">
+    tools:context="com.example.idan.lungupfinal.Chat.ChatListActivity">
 
 
     <android.support.v7.widget.RecyclerView

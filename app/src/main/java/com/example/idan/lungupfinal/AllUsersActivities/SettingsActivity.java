@@ -1,27 +1,25 @@
-package com.example.idan.lungupfinal;
+package com.example.idan.lungupfinal.AllUsersActivities;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.example.idan.lungupfinal.soundmeter.GameActivity;
+import com.example.idan.lungupfinal.Classes.Patient;
+import com.example.idan.lungupfinal.Classes.MySharedPreferences;
+import com.example.idan.lungupfinal.NotificationReciever;
+import com.example.idan.lungupfinal.R;
 import com.example.idan.lungupfinal.soundmeter.InitActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.w3c.dom.Text;
-
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 
 public class SettingsActivity extends AppCompatActivity {

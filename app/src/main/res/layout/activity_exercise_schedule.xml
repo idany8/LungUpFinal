@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@drawable/background_general"
-    tools:context="com.example.idan.lungupfinal.ExerciseSchedule">
+    tools:context="com.example.idan.lungupfinal.CageGiverActivities.ExerciseSchedule">
 
     <include
         layout="@layout/view_header"/>

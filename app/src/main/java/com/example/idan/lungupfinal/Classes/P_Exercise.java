@@ -1,4 +1,7 @@
-package com.example.idan.lungupfinal;
+package com.example.idan.lungupfinal.Classes;
+
+import com.example.idan.lungupfinal.Classes.Exercise;
+import com.example.idan.lungupfinal.Classes.PerfUnit;
 
 import java.io.Serializable;
 import java.util.ArrayList;

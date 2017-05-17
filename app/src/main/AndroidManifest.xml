@@ -23,29 +23,27 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".MainActivity"></activity>
-        <activity android:name=".CreateNewPatient" />
-        <activity android:name=".CaregiverMenuActivity" />
-        <activity android:name=".PatientMenuActivity" />
-        <activity android:name=".LoginActivity">
+        <activity android:name=".CageGiverActivities.CreateNewPatient" />
+        <activity android:name=".CageGiverActivities.CaregiverMenuActivity" />
+        <activity android:name=".PatientActivities.PatientMenuActivity" />
+        <activity android:name=".AllUsersActivities.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AssignedPatientsActivity" />
-        <activity android:name=".AssignedUsersActivity" />
-        <activity android:name=".CreateNewExerciseActivity" />
-        <activity android:name=".ExercisesPlanActivity" />
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".PatientSumActivity" />
-        <activity android:name=".PerformCustomExercise" />
+        <activity android:name=".CageGiverActivities.AssignedUsersActivity" />
+        <activity android:name=".CageGiverActivities.CreateNewExerciseActivity" />
+        <activity android:name=".CageGiverActivities.ExercisesPlanActivity" />
+        <activity android:name=".AllUsersActivities.RegisterActivity" />
+        <activity android:name=".CageGiverActivities.PatientSumActivity" />
+        <activity android:name=".PatientActivities.PerformCustomExercise" />
         <activity android:name=".SpinnerGame" />
-        <activity android:name=".ExerciseSchedule" />
+        <activity android:name=".CageGiverActivities.ExerciseSchedule" />
         <activity android:name=".soundmeter.GameActivity" />
-        <activity android:name=".ChatActivity" />
-        <activity android:name=".ChatListActivity" />
+        <activity android:name=".Chat.ChatActivity" />
+        <activity android:name=".Chat.ChatListActivity" />
         <activity android:name=".soundmeter.InitActivity" />
         <activity android:name=".soundmeter.SpinActivity" />
         <!--
@@ -56,12 +54,12 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".PatientExercisesList" />
-        <activity android:name=".SettingsActivity" />
+        <activity android:name=".PatientActivities.PatientExercisesList" />
+        <activity android:name=".AllUsersActivities.SettingsActivity" />
 
         <receiver android:name=".NotificationReciever" />
 
-        <activity android:name=".PatientDetailedPerformance"></activity>
+        <activity android:name=".AllUsersActivities.PatientDetailedPerformance"></activity>
     </application>
 
 </manifest>

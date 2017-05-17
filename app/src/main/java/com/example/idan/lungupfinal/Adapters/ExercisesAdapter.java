@@ -8,7 +8,7 @@
 //import android.view.ViewGroup;
 //import android.widget.TextView;
 //
-//import com.example.idan.lungupfinal.P_Exercise;
+//import com.example.idan.lungupfinal.Classes.P_Exercise;
 //import com.example.idan.lungupfinal.R;
 //
 //import java.util.ArrayList;

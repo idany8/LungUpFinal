@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_general"
-    tools:context="com.example.idan.lungupfinal.ChatActivity">
+    tools:context="com.example.idan.lungupfinal.Chat.ChatActivity">
 
     <include
         layout="@layout/view_header"

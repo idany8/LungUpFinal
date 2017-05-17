@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 
+import com.example.idan.lungupfinal.PatientActivities.PatientExercisesList;
+
 /**
  * Created by Idan on 16/05/2017.
  */

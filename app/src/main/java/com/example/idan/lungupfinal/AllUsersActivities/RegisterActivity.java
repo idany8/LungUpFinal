@@ -1,7 +1,6 @@
-package com.example.idan.lungupfinal;
+package com.example.idan.lungupfinal.AllUsersActivities;
 
 import android.content.Intent;
-import android.media.Image;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,12 +9,14 @@ import android.text.TextUtils;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.idan.lungupfinal.CageGiverActivities.CaregiverMenuActivity;
+import com.example.idan.lungupfinal.Classes.User;
+import com.example.idan.lungupfinal.PatientActivities.PatientMenuActivity;
+import com.example.idan.lungupfinal.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;

@@ -6,6 +6,8 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.util.Log;
 
+import com.example.idan.lungupfinal.Classes.MySharedPreferences;
+
 import java.util.Calendar;
 
 /**

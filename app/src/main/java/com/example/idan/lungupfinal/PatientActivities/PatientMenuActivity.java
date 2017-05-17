@@ -1,22 +1,21 @@
-package com.example.idan.lungupfinal;
+package com.example.idan.lungupfinal.PatientActivities;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.media.Image;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.idan.lungupfinal.soundmeter.GameActivity;
+import com.example.idan.lungupfinal.AllUsersActivities.LoginActivity;
+import com.example.idan.lungupfinal.AllUsersActivities.PatientDetailedPerformance;
+import com.example.idan.lungupfinal.AllUsersActivities.SettingsActivity;
+import com.example.idan.lungupfinal.Chat.ChatListActivity;
+import com.example.idan.lungupfinal.Classes.User;
+import com.example.idan.lungupfinal.R;
 import com.example.idan.lungupfinal.soundmeter.SpinActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
