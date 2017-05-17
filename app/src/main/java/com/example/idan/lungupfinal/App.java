@@ -1,7 +1,12 @@
 package com.example.idan.lungupfinal;
 
+import android.app.AlarmManager;
 import android.app.Application;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.util.Log;
+
+import java.util.Calendar;
 
 /**
  * Created by Idan on 23/04/2017.
@@ -9,21 +14,34 @@ import android.util.Log;
 
 public class App extends Application {
 
-    private int mCreateAccountCounter;
+
 
     @Override
     public void onCreate() {
         super.onCreate();
-        mCreateAccountCounter = 0;
-        Log.d("increase:",""+mCreateAccountCounter );
+        MySharedPreferences msp = new MySharedPreferences(this);
+        Log.d("starting App", "in");
+
+        if (!msp.getBooleanFromSharedPreferences("ALARM_SET",false)) {
+            createAlarmNotifications();
+            msp.putBooleanIntoSharedPrefernces("ALARM_SET",true);
+                            }
     }
 
-    public int getCreateAccountCounter() {
-        return mCreateAccountCounter;
+    private void createAlarmNotifications() {
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY,14);
+        calendar.set(Calendar.MINUTE,46);
+        calendar.set(Calendar.SECOND,30);
+        Intent intent = new Intent(getApplicationContext(), NotificationReciever.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),100,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
+        Log.d("starting App", "done");
+
+
     }
 
-    public void increaseCreateAccountCounter() {
-        mCreateAccountCounter++;
-        Log.d("increase:","+1 "+mCreateAccountCounter );
-    }
+
 }

@@ -90,8 +90,8 @@ public class PatientMenuActivity extends AppCompatActivity {
 
         findViewById(R.id.btn_performance_ptm).setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-//                Intent intent = new Intent(PatientMenuActivity.this, CreateNewExerciseActivity.class);
-//                startActivity(intent);
+                Intent intent = new Intent(PatientMenuActivity.this, PatientDetailedPerformance.class);
+                startActivity(intent);
             }
         });
         qr_assign_btn.setOnClickListener(new View.OnClickListener() {
