@@ -58,6 +58,11 @@ public class P_Exercise extends Exercise implements Serializable {
     public P_Exercise(int id, String type, String exercise_name, String description, String imagePath, String author_name, String author_uid, boolean isPrivate) {
         super(id, type, exercise_name, description, imagePath, author_name, author_uid, isPrivate);
     }
+
+    public P_Exercise(int id, String exercise_name, String type) {
+        super(id, exercise_name, type);
+    }
+
     public String getFormattedSchedule(){
         String sch = this.schedule;
 //        str = str.replaceAll("\\D+","");

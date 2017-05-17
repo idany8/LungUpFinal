@@ -98,6 +98,15 @@ public class PatientSumActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+        detailedPerf.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(PatientSumActivity.this, PatientDetailedPerformance.class);
+                i.putExtra("PATIENT_UID", patUid);
+                startActivity(i);
+            }
+        });
+
 
     }
 

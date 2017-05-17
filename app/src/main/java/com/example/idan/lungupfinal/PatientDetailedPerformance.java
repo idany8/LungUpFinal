@@ -27,9 +27,17 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
@@ -40,15 +48,27 @@ public class PatientDetailedPerformance extends AppCompatActivity {
     LineChart lineChart;
     BarChart barChart;
     private String patUid;
+    private TextView mTvHeader;
+    private ListView exercisesLv;
+    private ArrayAdapter<P_Exercise> listAdapter;
+    ArrayList<P_Exercise> patientPExercises;
+    ArrayList<PerfUnit> arrPatLU ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_detailed_performance);
+        lineChart = (LineChart) findViewById(R.id.det_per_lineChart);
+        barChart = (BarChart) findViewById(R.id.det_per_barchart);
+        mTvHeader = (TextView) findViewById(R.id.det_per_header);
+        exercisesLv = (ListView) findViewById(R.id.det_per_lv);
+        exercisesLv.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+
+        lineChart.setVisibility(View.GONE);
+        barChart.setVisibility(View.GONE);
 
 
         FirebaseAuth mAuthLoggedUser = FirebaseAuth.getInstance();
-        Log.d("starting App", "i131232132");
 
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
@@ -60,10 +80,49 @@ public class PatientDetailedPerformance extends AppCompatActivity {
             }
         }
 
+
         getPatientPExercisesList();
 
-        //initLineChart();
-        //initBarChart();
+
+    }
+
+    private void initListView(ArrayList<P_Exercise> listViewItems) {
+        listViewItems.add(0,new P_Exercise(123,"ALL",""));
+
+        // Create ArrayAdapter using the planet list.
+        listAdapter = new ArrayAdapter<P_Exercise>(this, R.layout.list_item, R.id.txtitem, listViewItems);
+        // Setup Adapter for ListActivity using in ListView
+        exercisesLv.setAdapter(listAdapter);
+
+       // ListView listView = getListView();
+        // Setup listerner for clicks
+        exercisesLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {
+                String item = adapterView.getItemAtPosition(pos).toString();
+                barChart.setVisibility(View.GONE);
+                lineChart.setVisibility(View.GONE);
+
+                if (pos==0){
+                    createChartsArrays(arrPatLU);
+                }else{
+
+
+
+                ArrayList<PerfUnit> chosenPatLU = new ArrayList<PerfUnit>();
+
+                for (int t=0;t<arrPatLU.size();t++)
+                {
+                    if (arrPatLU.get(t).getEx_name().equals(item)){
+                        chosenPatLU.add(arrPatLU.get(t));
+                    }
+                }
+                createChartsArrays(chosenPatLU);
+                }
+
+            }
+        });
+
     }
 
     private void getPatientPExercisesList() {
@@ -73,27 +132,20 @@ public class PatientDetailedPerformance extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Patient loggedPat = dataSnapshot.getValue(Patient.class);
+                mTvHeader.setText(loggedPat.getName() + " Performance");
                 if (loggedPat.getP_exercises() != null) {
-                    ArrayList<P_Exercise> patientPExercises = loggedPat.getP_exercises();
-                    ArrayList<PerfUnit> arrPatLU = getAllRecords(patientPExercises);
+                    patientPExercises = loggedPat.getP_exercises();
+                    initListView(patientPExercises);
+                    arrPatLU = getAllRecords(patientPExercises);
                     if (arrPatLU.size()>0)
                         createChartsArrays(arrPatLU);
-
-                    //initLineChart();
-
-
-
-
                 } else {
                     Log.d("checkerror", "nothing in user EL ");
                     ArrayList<P_Exercise> loggedUsrEL = new ArrayList<P_Exercise>();
                 }
-
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
             }
 
         });
@@ -142,10 +194,6 @@ public class PatientDetailedPerformance extends AppCompatActivity {
                     cal.add(Calendar.DATE, -1);
                     d = cal.getTime();
                 }
-//                if (!(fmt.format(d).equals(fmt.format(tmp_d)))) {
-//                    //savetmps;
-//                    Log.d("daysstamps", "count"+ tmpCount + " score" + tmpCount + " day" + fmt.format(cal.getTime()));
-//                }
                     tmpCount++;
                     tmpScore+=tmpScore;
             }
@@ -156,36 +204,11 @@ public class PatientDetailedPerformance extends AppCompatActivity {
         dayNumber++;
         Log.d("daysstamps", "count"+ tmpCount + " score" + tmpScore + " day" + fmt.format(tmp_d));
 
-
         initLineChart(scoresEntryList,xVals);
         initBarChart(entries,xVals);
-
-//        lineChart = (LineChart) findViewById(R.id.det_per_lineChart);
-//        LineDataSet set = new LineDataSet(scoresEntryList, "Usage");
-//        set.setColor(Color.BLACK);
-//        LineData data = new LineData(xScoresVals, set);
-//
-//        data.setValueTextSize(9f);
-//        data.setDrawValues(false);
-//        lineChart.setData(data);
-//
-//        lineChart.setVisibleXRangeMaximum(10);
     }
 
     private void initLineChart(ArrayList<Entry> scoresEntryList,ArrayList<String> xVals) {
-        lineChart = (LineChart) findViewById(R.id.det_per_lineChart);
-
-
-//        ArrayList<Entry> scoresEntryList = new ArrayList<>();
-//        ArrayList<String> xVals = new ArrayList<>();
-
-
-//        for (int i = 0; i < 30; i++) {
-//            float x = i % 3;
-//            scoresEntryList.add(new Entry(x, i));
-//            xVals.add(i, String.valueOf(i) + ".12");
-//        }
-
         LineDataSet set = new LineDataSet(scoresEntryList, "Usage");
         set.setColor(Color.BLACK);
         LineData data = new LineData(xVals, set);
@@ -195,25 +218,15 @@ public class PatientDetailedPerformance extends AppCompatActivity {
         lineChart.setData(data);
 
         lineChart.setVisibleXRangeMaximum(10);
-
-
+        lineChart.setVisibility(View.VISIBLE);
     }
 
     private void initBarChart(ArrayList<BarEntry> entries,ArrayList<String> xVals ) {
-        barChart = (BarChart) findViewById(R.id.det_per_barchart);
-
-//        ArrayList<BarEntry> entries = new ArrayList<>();
-//        entries.add(new BarEntry(3f, 0));
-//        entries.add(new BarEntry(2f, 1));
-//        entries.add(new BarEntry(0f, 2));
-//        entries.add(new BarEntry(1f, 3));
-//        entries.add(new BarEntry(3f, 4));
-//        entries.add(new BarEntry(3, 5));
-
         BarDataSet dataset = new BarDataSet(entries, "Usage number");
         BarData data = new BarData(xVals, dataset);
         barChart.setData(data);
         barChart.setVisibleXRangeMaximum(10L);
+        barChart.setVisibility(View.VISIBLE);
     }
 
     private ArrayList<PerfUnit> getAllRecords(ArrayList<P_Exercise> patPExs) {

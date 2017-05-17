@@ -22,16 +22,28 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="10dp" />
 
-    <com.github.mikephil.charting.charts.LineChart
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:id="@+id/det_per_lineChart"></com.github.mikephil.charting.charts.LineChart>
+    <ListView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/det_per_lv"
+        android:layout_width="fill_parent"
+        android:layout_height="100dp"
+        android:padding="10dp"
 
+     >
+    </ListView>
 
     <com.github.mikephil.charting.charts.BarChart
         android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:id="@+id/det_per_barchart"></com.github.mikephil.charting.charts.BarChart>
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginTop="20dp"
+        android:id="@+id/det_per_lineChart"></com.github.mikephil.charting.charts.LineChart>
+
+
+
 
 </LinearLayout>

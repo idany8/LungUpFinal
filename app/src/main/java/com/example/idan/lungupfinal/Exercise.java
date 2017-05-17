@@ -30,6 +30,12 @@ public class Exercise implements Serializable {
         this.isPrivate = isPrivate;
     }
 
+    public Exercise(int id, String exercise_name, String type) {
+        this.id = id;
+        this.exercise_name = exercise_name;
+        this.type = type;
+    }
+
     public int getId() {
         return id;
     }
