@@ -1,12 +1,16 @@
 package com.example.idan.lungupfinal.CageGiverActivities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 
 import com.example.idan.lungupfinal.Adapters.MyAdapter;
+import com.example.idan.lungupfinal.AllUsersActivities.LoginActivity;
 import com.example.idan.lungupfinal.Classes.User;
 import com.example.idan.lungupfinal.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -22,12 +26,14 @@ public class AssignedUsersActivity extends Activity {
     private MyAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     ArrayList<User> testUsers;
+    FirebaseAuth mAuthLoggedUser;
+    private TextView mUsrName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_assigned_users);
         recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
-
+        mUsrName= (TextView)findViewById(R.id.user_name_tv);
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
         // recyclerView.setHasFixedSize(true);
@@ -36,11 +42,20 @@ public class AssignedUsersActivity extends Activity {
         mLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutManager);
         testUsers = new ArrayList<>();
-        FirebaseAuth mAuthLoggedUser = FirebaseAuth.getInstance();
+        mAuthLoggedUser = FirebaseAuth.getInstance();
+        findViewById(R.id.button_logout).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                mAuthLoggedUser.signOut();
+                Intent intent = new Intent(AssignedUsersActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+
         FirebaseDatabase.getInstance().getReference().child("users").child(mAuthLoggedUser.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User loggedUser= dataSnapshot.getValue(User.class);
+                mUsrName.setText(loggedUser.getName());
                 final ArrayList<String> loggedUsrRu = loggedUser.getRelatedUsers();
                 FirebaseDatabase.getInstance().getReference().child("users").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override

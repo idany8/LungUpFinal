@@ -13,7 +13,7 @@
         layout="@layout/view_header"/>
 
     <TextView
-        android:id="@+id/tv_spinner_header"
+        android:id="@+id/tv_ex_plan_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="My Exercises Plan"
@@ -23,13 +23,15 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="3dp" />
 
-    <TextView
+    <ImageButton
         android:id="@+id/add_row_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:text="Add Row"
-        android:background="#FFF000"/>
+        android:layout_gravity="center_horizontal"
+        android:background="@null"
+        android:src="@drawable/btn_add_new_exercise"/>
 
     <!-- A RecyclerView with some commonly used attributes -->
 
@@ -43,13 +45,14 @@
         android:layout_height="400dp"
         android:scrollbars="vertical" />
 
-    <TextView
+    <ImageButton
         android:id="@+id/ex_save_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="10dp"
+        android:layout_gravity="center_horizontal"
         android:text="Save"
-        android:background="#FFF000"/>
+        android:background="@null"
+        android:src="@drawable/btn_save_ex_plan"/>
 
 
 </LinearLayout>

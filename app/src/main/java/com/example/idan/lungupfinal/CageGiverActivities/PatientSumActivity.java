@@ -9,11 +9,13 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.idan.lungupfinal.AllUsersActivities.LoginActivity;
 import com.example.idan.lungupfinal.AllUsersActivities.PatientDetailedPerformance;
 import com.example.idan.lungupfinal.Classes.P_Exercise;
 import com.example.idan.lungupfinal.Classes.Patient;
 import com.example.idan.lungupfinal.Classes.PerfUnit;
 import com.example.idan.lungupfinal.R;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -28,11 +30,15 @@ public class PatientSumActivity extends AppCompatActivity {
     TextView patientName;
     ImageButton editExPlan, detailedPerf;
     ListView lv_el,lv_lu;
+    private TextView mUsrName;
+
+    private FirebaseAuth mAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_sum);
-
+        mAuth = FirebaseAuth.getInstance();
         initialSum();
 
         if (savedInstanceState == null) {
@@ -44,41 +50,33 @@ public class PatientSumActivity extends AppCompatActivity {
             }
         }
 
-        if (patUid!=null) {
-            patientName.setText(patUid);    /// catch intent error here
-        }else patientName.setText("error");
+
+        mUsrName= (TextView)findViewById(R.id.user_name_tv);
+        findViewById(R.id.button_logout).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                mAuth.signOut();
+                Intent intent = new Intent(PatientSumActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+        FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Patient loggedPat = dataSnapshot.getValue(Patient.class);
+                mUsrName.setText(loggedPat.getName());
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+
+        });
+
+
+
+
         initialListViews();
 
 
-
-
-
-//        FirebaseDatabase.getInstance().getReference().child("users").child(patUid).addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                Patient requestedPatient= dataSnapshot.getValue(Patient.class);
-//                patientName.setText(requestedPatient.getName());
-////
-//                Date date = new Date();
-//                PerfUnit pf = new PerfUnit(date,5.2);
-//                ArrayList<PerfUnit> pfarray = new ArrayList<PerfUnit>();
-//                pfarray.add(pf);
-//                pfarray.add(pf);
-//
-//                P_Exercise pex = new P_Exercise("2TAW",pfarray);
-//
-//                ArrayList<P_Exercise> exArray = new ArrayList<P_Exercise>();
-//                exArray.add(pex);
-//                requestedPatient.setP_exercises(exArray);
-//                FirebaseDatabase.getInstance().getReference().child("users").child(patUid).setValue(requestedPatient);
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
 
     }
     public void initialSum(){
@@ -115,6 +113,7 @@ public class PatientSumActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Patient reqPat = dataSnapshot.getValue(Patient.class);
+                patientName.setText(reqPat.getName()+" Summary");
                 if (reqPat.getP_exercises()!=null) {
                     ArrayList<P_Exercise> patientPExercises = reqPat.getP_exercises();
 

@@ -26,8 +26,13 @@ import java.util.ArrayList;
 public class ExercisesPlanActivity extends AppCompatActivity {
     public final static int REQ_CODE_OK = 1;
     public final static int REQ_CODE_CANCEL = 3;
-private String patUid;
+    private String patUid;
     ExerciseAdapter adapter;
+    private TextView mUsrName,mHeader;
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,16 +50,32 @@ private String patUid;
             }
         }
 //
+        mUsrName= (TextView)findViewById(R.id.user_name_tv);
+        mHeader= (TextView)findViewById(R.id.tv_ex_plan_header);
+
 
         FirebaseAuth mAuthLoggedUser = FirebaseAuth.getInstance();
+        FirebaseDatabase.getInstance().getReference().child("users").child(mAuthLoggedUser.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Patient loggedPat = dataSnapshot.getValue(Patient.class);
+                mUsrName.setText(loggedPat.getName());
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+
+        });
+
+
         FirebaseDatabase.getInstance().getReference().child("users").child(patUid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Patient loggedPat = dataSnapshot.getValue(Patient.class);
+                mHeader.setText(loggedPat.getName()+ " Exercises Plan");
                 if (loggedPat.getP_exercises()!=null) {
                     ArrayList<P_Exercise> loggedUsrEL = loggedPat.getP_exercises();
-                    // for (P_Exercise ex : loggedUsrEL)
-                    // exercisesArray.add(ex);
+
                     adapter = new ExerciseAdapter(loggedUsrEL,loggedPat);
                     RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
                     recyclerView.setLayoutManager(mLayoutManager);
@@ -90,13 +111,6 @@ private String patUid;
 
 
 
-//
-//        //final MoviesAdapter adapter = new MoviesAdapter(getMovies());
-//        final ExerciseAdapter adapter = new ExerciseAdapter()
-//        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-//        recyclerView.setLayoutManager(mLayoutManager);
-//        recyclerView.setItemAnimator(new DefaultItemAnimator());
-//        recyclerView.setAdapter(adapter);
         findViewById(R.id.ex_save_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -110,8 +124,7 @@ private String patUid;
                 Intent child = new Intent(ExercisesPlanActivity.this, ExerciseSchedule.class);
                 startActivityForResult(child, REQ_CODE_OK);
 
-//                P_Exercise p_ex1 = new P_Exercise(54545,"normal","the best","this is the best",null,"me","fdsfds43",false,"S2M2T2W2T2F2S2");
-//                adapter.addItem(p_ex1);
+
             }
         });
 
@@ -138,7 +151,6 @@ private String patUid;
         private Patient patient= new Patient();
 
         public void saveToDB() {
-
             patient.setP_exercises(pexList);
             FirebaseDatabase.getInstance().getReference().child("users").child(patient.getUid()).setValue(patient);
 

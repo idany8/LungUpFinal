@@ -62,7 +62,7 @@ public class SpinActivity extends AppCompatActivity {
         MySharedPreferences msp = new MySharedPreferences(this);
         String tmp;
 //        tmp = msp.getStringFromSharedPrefernces("rec5", "na");
-//        userInitialValue= GameActivity.calculateMicValues(tmp);
+//        userInitialValue= HitGameActivity.calculateMicValues(tmp);
 
         userInitialValue = msp.getIntFromSharedPrefernces("MIC_INIT_VALUE", -1);
         userInitialTime = msp.getLongFromSharedPreferences("MIC_INIT_DATE",-1);

@@ -152,7 +152,6 @@ public class CaregiverMenuActivity extends AppCompatActivity implements View.OnC
                     user1.setRelatedUsers(uid1RU);
                     FirebaseDatabase.getInstance().getReference().child("users").child(firstUid).setValue(user1);
 
-
                     FirebaseDatabase.getInstance().getReference().child("chats").child(secondUid).child(firstUid).setValue(new Chat(user1.getName()));
                 }
                             }

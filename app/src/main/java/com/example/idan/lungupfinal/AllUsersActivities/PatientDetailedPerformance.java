@@ -1,5 +1,6 @@
 package com.example.idan.lungupfinal.AllUsersActivities;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import com.example.idan.lungupfinal.Classes.P_Exercise;
 import com.example.idan.lungupfinal.Classes.Patient;
 import com.example.idan.lungupfinal.Classes.PerfUnit;
+import com.example.idan.lungupfinal.PatientActivities.PatientExercisesList;
 import com.example.idan.lungupfinal.R;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
@@ -23,6 +25,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -47,6 +52,8 @@ public class PatientDetailedPerformance extends AppCompatActivity {
     private ArrayAdapter<P_Exercise> listAdapter;
     ArrayList<P_Exercise> patientPExercises;
     ArrayList<PerfUnit> arrPatLU ;
+    private TextView mUsrName;
+    private FirebaseAuth mAuthLoggedUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +62,7 @@ public class PatientDetailedPerformance extends AppCompatActivity {
         lineChart = (LineChart) findViewById(R.id.det_per_lineChart);
         barChart = (BarChart) findViewById(R.id.det_per_barchart);
         mTvHeader = (TextView) findViewById(R.id.det_per_header);
+        mUsrName= (TextView)findViewById(R.id.user_name_tv);
         exercisesLv = (ListView) findViewById(R.id.det_per_lv);
         exercisesLv.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
@@ -62,7 +70,9 @@ public class PatientDetailedPerformance extends AppCompatActivity {
         barChart.setVisibility(View.GONE);
 
 
-        FirebaseAuth mAuthLoggedUser = FirebaseAuth.getInstance();
+        mAuthLoggedUser = FirebaseAuth.getInstance();
+
+
 
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
@@ -74,6 +84,25 @@ public class PatientDetailedPerformance extends AppCompatActivity {
             }
         }
 
+        findViewById(R.id.button_logout).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                mAuthLoggedUser.signOut();
+                Intent intent = new Intent(PatientDetailedPerformance.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+        FirebaseDatabase.getInstance().getReference().child("users").child(mAuthLoggedUser.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Patient loggedPat = dataSnapshot.getValue(Patient.class);
+                mUsrName.setText(loggedPat.getName());
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+
+        });
 
         getPatientPExercisesList();
 
@@ -150,56 +179,59 @@ public class PatientDetailedPerformance extends AppCompatActivity {
         SimpleDateFormat fmt = new SimpleDateFormat("yyyyMMdd");
         SimpleDateFormat fmtToChart = new SimpleDateFormat("dd/MM");
         Calendar cal = Calendar.getInstance();
-        Date d = new Date(arrPatLU.get(0).getTime());
-        cal.setTime(d);
-        float tmpCount=0,tmpScore=0;
-        Date tmp_d=null;
-        int dayNumber=0;
-        ArrayList<Entry> scoresEntryList = new ArrayList<>();
-        ArrayList<String> xVals = new ArrayList<>();
-        ArrayList<BarEntry> entries = new ArrayList<>();
+        if (arrPatLU.size()>0) {
+            Date d = new Date(arrPatLU.get(0).getTime());
+            cal.setTime(d);
 
-        for (int i=0;i<arrPatLU.size();i++){
-            Calendar tmpCal = Calendar.getInstance();
-            tmp_d = new Date(arrPatLU.get(i).getTime());
-            tmpCal.setTime(tmp_d);
+            float tmpCount = 0, tmpScore = 0;
+            Date tmp_d = null;
+            int dayNumber = 0;
+            ArrayList<Entry> scoresEntryList = new ArrayList<>();
+            ArrayList<String> xVals = new ArrayList<>();
+            ArrayList<BarEntry> entries = new ArrayList<>();
 
-            if (fmt.format(d).equals(fmt.format(tmp_d))){
-                tmpCount++;
-                tmpScore+=tmpScore;
+            for (int i = 0; i < arrPatLU.size(); i++) {
+                Calendar tmpCal = Calendar.getInstance();
+                tmp_d = new Date(arrPatLU.get(i).getTime());
+                tmpCal.setTime(tmp_d);
 
-            }else {
-                //savetmps;
-                scoresEntryList.add(new Entry((tmpScore/tmpCount), dayNumber));
-                xVals.add(dayNumber, String.valueOf(fmtToChart.format(cal.getTime())));
-                entries.add(new BarEntry(tmpCount, dayNumber));
-                dayNumber++;
-                Log.d("daysstamps", "count"+ tmpCount + " score" + tmpScore + " day" + fmt.format(cal.getTime()));
-                tmpCount = 0;
-                tmpScore = 0;
-                cal.add(Calendar.DATE, -1);
-                d = cal.getTime();
-                while (!(fmt.format(d).equals(fmt.format(tmp_d)))) {
-                    scoresEntryList.add(new Entry((tmpScore/tmpCount), dayNumber));
+                if (fmt.format(d).equals(fmt.format(tmp_d))) {
+                    tmpCount++;
+                    tmpScore += tmpScore;
+
+                } else {
+                    //savetmps;
+                    scoresEntryList.add(new Entry((tmpScore / tmpCount), dayNumber));
                     xVals.add(dayNumber, String.valueOf(fmtToChart.format(cal.getTime())));
                     entries.add(new BarEntry(tmpCount, dayNumber));
                     dayNumber++;
                     Log.d("daysstamps", "count" + tmpCount + " score" + tmpScore + " day" + fmt.format(cal.getTime()));
+                    tmpCount = 0;
+                    tmpScore = 0;
                     cal.add(Calendar.DATE, -1);
                     d = cal.getTime();
-                }
+                    while (!(fmt.format(d).equals(fmt.format(tmp_d)))) {
+                        scoresEntryList.add(new Entry((tmpScore / tmpCount), dayNumber));
+                        xVals.add(dayNumber, String.valueOf(fmtToChart.format(cal.getTime())));
+                        entries.add(new BarEntry(tmpCount, dayNumber));
+                        dayNumber++;
+                        Log.d("daysstamps", "count" + tmpCount + " score" + tmpScore + " day" + fmt.format(cal.getTime()));
+                        cal.add(Calendar.DATE, -1);
+                        d = cal.getTime();
+                    }
                     tmpCount++;
-                    tmpScore+=tmpScore;
+                    tmpScore += tmpScore;
+                }
             }
-        }
-        scoresEntryList.add(new Entry((tmpScore/tmpCount), dayNumber));
-        xVals.add(dayNumber, String.valueOf(fmtToChart.format(cal.getTime())));
-        entries.add(new BarEntry(tmpCount, dayNumber));
-        dayNumber++;
-        Log.d("daysstamps", "count"+ tmpCount + " score" + tmpScore + " day" + fmt.format(tmp_d));
+            scoresEntryList.add(new Entry((tmpScore / tmpCount), dayNumber));
+            xVals.add(dayNumber, String.valueOf(fmtToChart.format(cal.getTime())));
+            entries.add(new BarEntry(tmpCount, dayNumber));
+            dayNumber++;
+            Log.d("daysstamps", "count" + tmpCount + " score" + tmpScore + " day" + fmt.format(tmp_d));
 
-        initLineChart(scoresEntryList,xVals);
-        initBarChart(entries,xVals);
+            initLineChart(scoresEntryList, xVals);
+            initBarChart(entries, xVals);
+        }
     }
 
     private void initLineChart(ArrayList<Entry> scoresEntryList,ArrayList<String> xVals) {

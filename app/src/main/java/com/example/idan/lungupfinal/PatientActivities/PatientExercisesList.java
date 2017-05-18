@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.idan.lungupfinal.AllUsersActivities.LoginActivity;
 import com.example.idan.lungupfinal.Classes.P_Exercise;
 import com.example.idan.lungupfinal.Classes.Patient;
 import com.example.idan.lungupfinal.R;
@@ -29,22 +30,35 @@ public class PatientExercisesList extends AppCompatActivity {
     public final static int REQ_CODE_CANCEL = 3;
     private String patUid;
     ExerciseAdapterPat adapter;
+    private TextView mUsrName;
+    private FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_exercises_list);
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.pat_el_recycler_view);
-
+        mUsrName = (TextView)findViewById(R.id.user_name_tv);
         FirebaseAuth mAuthLoggedUser = FirebaseAuth.getInstance();
         patUid =mAuthLoggedUser.getCurrentUser().getUid();
+        mAuth = FirebaseAuth.getInstance();
+        findViewById(R.id.button_logout).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                mAuth.signOut();
+                Intent intent = new Intent(PatientExercisesList.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+
         FirebaseDatabase.getInstance().getReference().child("users").child(patUid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Patient loggedPat = dataSnapshot.getValue(Patient.class);
+                mUsrName.setText(loggedPat.getName());
                 if (loggedPat.getP_exercises()!=null) {
                     ArrayList<P_Exercise> loggedUsrEL = loggedPat.getP_exercises();
-                    // for (P_Exercise ex : loggedUsrEL)
-                    // exercisesArray.add(ex);
+
+                    Log.d("weekdays",""+loggedUsrEL.get(2).getWeekDaysArray() );
+                    //
 
                     adapter = new ExerciseAdapterPat(loggedUsrEL,loggedPat);
                     RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -74,6 +88,7 @@ public class PatientExercisesList extends AppCompatActivity {
 
 
     }
+
     public class ExerciseAdapterPat extends RecyclerView.Adapter<PatientExercisesList.ExerciseAdapterPat.MyViewHolder> {
 
         private ArrayList<P_Exercise> pexList;
@@ -99,6 +114,7 @@ public class PatientExercisesList extends AppCompatActivity {
             }
         }
 
+
         public ExerciseAdapterPat(ArrayList<P_Exercise> pexList, Patient patient) {
             this.pexList = pexList;
             this.patient = patient;
@@ -123,9 +139,8 @@ public class PatientExercisesList extends AppCompatActivity {
 
             P_Exercise pex = pexList.get(position);
             holder.title.setText(pex.getExercise_name());
-
             holder.genre.setText(pex.getDescription());
-            holder.year.setText(pex.getSchedule());
+            holder.year.setText(pex.getFormattedSchedule());
             holder.playBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

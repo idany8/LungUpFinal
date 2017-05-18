@@ -34,7 +34,7 @@ import com.liulishuo.magicprogresswidget.MagicProgressCircle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class GameActivity extends AppCompatActivity {
+public class HitGameActivity extends AppCompatActivity {
 
     private int mHeight;
     private int mWidth;
@@ -63,7 +63,7 @@ public class GameActivity extends AppCompatActivity {
         @Override
         public void run() {
             if (testCounter < ((SECONDS_TO_TEST*1000)/TIME_BETWEEN_SAMPLE)) {
-                Recorder.getInstance(GameActivity.this).SoundDB();
+                Recorder.getInstance(HitGameActivity.this).SoundDB();
                 mHandler.postDelayed(mUpdateTimer, TIME_BETWEEN_SAMPLE);
                 testCounter++;
                 int time = SECONDS_TO_TEST - (testCounter/(int)(1000/TIME_BETWEEN_SAMPLE) ) ;
@@ -76,7 +76,7 @@ public class GameActivity extends AppCompatActivity {
     };
 
     private void gameDone() {
-        Recorder.getInstance(GameActivity.this).saveData(0,0,score); // change to the right scores
+        Recorder.getInstance(HitGameActivity.this).saveData(0,0,score); // change to the right scores
         //ScoreUnit su = new ScoreUnit(score, uName);
        // myRef.push().setValue(su);
         onBackPressed();
@@ -234,7 +234,7 @@ private void startGame(final RelativeLayout container){
 
             }
         };
-        Recorder.getInstance(GameActivity.this).setRecorderUpdateListener(recorderUpdateListener);
+        Recorder.getInstance(HitGameActivity.this).setRecorderUpdateListener(recorderUpdateListener);
         startTest();
         setVolumeControlStream(3);
 
@@ -289,7 +289,7 @@ private void startGame(final RelativeLayout container){
     }
 
     private void startTest() {
-        Recorder.getInstance(GameActivity.this).startRecorder();
+        Recorder.getInstance(HitGameActivity.this).startRecorder();
         mHandler.postDelayed(mUpdateTimer, TIME_BETWEEN_SAMPLE);
     }
 
@@ -306,11 +306,11 @@ private void startGame(final RelativeLayout container){
     @Override
     protected void onStop() {
         super.onStop();
-        Recorder.getInstance(GameActivity.this).RecorderRel();
+        Recorder.getInstance(HitGameActivity.this).RecorderRel();
     }
 
     private View createBlueBallView() {
-        ImageView imageView = new ImageView(GameActivity.this);
+        ImageView imageView = new ImageView(HitGameActivity.this);
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutParams.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
         imageView.setLayoutParams(layoutParams);
@@ -318,7 +318,7 @@ private void startGame(final RelativeLayout container){
         return imageView;
     }
     private View createRedBallView() {
-        ImageView imageView = new ImageView(GameActivity.this);
+        ImageView imageView = new ImageView(HitGameActivity.this);
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutParams.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
         imageView.setLayoutParams(layoutParams);
@@ -350,7 +350,7 @@ private void startGame(final RelativeLayout container){
                 .setMessage(message)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(GameActivity.this, InitActivity.class);
+                        Intent intent = new Intent(HitGameActivity.this, InitActivity.class);
                         startActivity(intent);
                     }
                 })

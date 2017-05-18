@@ -41,7 +41,7 @@
         <activity android:name=".PatientActivities.PerformCustomExercise" />
         <activity android:name=".SpinnerGame" />
         <activity android:name=".CageGiverActivities.ExerciseSchedule" />
-        <activity android:name=".soundmeter.GameActivity" />
+        <activity android:name=".soundmeter.HitGameActivity" />
         <activity android:name=".Chat.ChatActivity" />
         <activity android:name=".Chat.ChatListActivity" />
         <activity android:name=".soundmeter.InitActivity" />

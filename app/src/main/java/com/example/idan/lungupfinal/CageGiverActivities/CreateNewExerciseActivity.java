@@ -12,13 +12,19 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
+import com.example.idan.lungupfinal.AllUsersActivities.LoginActivity;
 import com.example.idan.lungupfinal.Classes.Exercise;
+import com.example.idan.lungupfinal.Classes.Patient;
 import com.example.idan.lungupfinal.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -35,6 +41,7 @@ public class CreateNewExerciseActivity extends AppCompatActivity {
     private String imagePath="";
     private Boolean isPrivate = false;
     private static final int GALLERY_INTENT =2;
+    private TextView mUsrName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +60,26 @@ public class CreateNewExerciseActivity extends AppCompatActivity {
         mDescription = (EditText) findViewById(R.id.et_nExercise_Description);
         pbar = (ProgressBar)findViewById(R.id.progressBar2);
         pbar.setVisibility(View.GONE);
-        Log.d("currentUser",""+mAuth.getCurrentUser().getEmail());
+        mUsrName= (TextView)findViewById(R.id.user_name_tv);
+        findViewById(R.id.button_logout).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                mAuth.signOut();
+                Intent intent = new Intent(CreateNewExerciseActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+        FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Patient loggedPat = dataSnapshot.getValue(Patient.class);
+                mUsrName.setText(loggedPat.getName());
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+
+
         //Toast.makeText(CreateNewExerciseActivity.this,""+mAuth.getCurrentUser().getEmail(),Toast.LENGTH_LONG);
 
         mSubmit.setOnClickListener(new View.OnClickListener() {

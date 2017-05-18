@@ -14,6 +14,7 @@ import com.example.idan.lungupfinal.Classes.MySharedPreferences;
 import com.example.idan.lungupfinal.NotificationReciever;
 import com.example.idan.lungupfinal.R;
 import com.example.idan.lungupfinal.soundmeter.InitActivity;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -27,6 +28,8 @@ public class SettingsActivity extends AppCompatActivity {
     private String patUid;
     private Long initDate;
     private Patient curPat;
+    private FirebaseAuth mAuth;
+    private TextView mUsrName;
     @Override
     public void onResume()
     {
@@ -65,6 +68,28 @@ public class SettingsActivity extends AppCompatActivity {
                 patUid = extras.getString("PATIENT_UID");
             }
         }
+        mAuth = FirebaseAuth.getInstance();
+        mUsrName= (TextView)findViewById(R.id.user_name_tv);
+        findViewById(R.id.button_logout).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                mAuth.signOut();
+                Intent intent = new Intent(SettingsActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Patient loggedPat = dataSnapshot.getValue(Patient.class);
+                mUsrName.setText(loggedPat.getName());
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+
+        });
 
 
 

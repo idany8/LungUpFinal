@@ -14,9 +14,10 @@ import com.example.idan.lungupfinal.AllUsersActivities.LoginActivity;
 import com.example.idan.lungupfinal.AllUsersActivities.PatientDetailedPerformance;
 import com.example.idan.lungupfinal.AllUsersActivities.SettingsActivity;
 import com.example.idan.lungupfinal.Chat.ChatListActivity;
-import com.example.idan.lungupfinal.Classes.User;
+import com.example.idan.lungupfinal.Classes.P_Exercise;
+import com.example.idan.lungupfinal.Classes.Patient;
 import com.example.idan.lungupfinal.R;
-import com.example.idan.lungupfinal.soundmeter.SpinActivity;
+import com.example.idan.lungupfinal.soundmeter.HitGameActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -29,11 +30,15 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+
 public class PatientMenuActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
     private TextView usr_name;
-    private User current_user;
+    private TextView mHeader;
+    private Patient current_user;
     private ImageView qr_assign_btn;
 
     private boolean qr_flag=false;
@@ -46,12 +51,19 @@ public class PatientMenuActivity extends AppCompatActivity {
        // img_popup_qr = (ImageView)findViewById(R.id.qr_popup_image);
         qr_assign_btn = (ImageView) findViewById (R.id.btn_assign_care_giver_ptm);
         usr_name = (TextView)findViewById(R.id.user_name_tv);
+        mHeader = (TextView)findViewById(R.id.tv_pt_header);
         mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                current_user= dataSnapshot.getValue(User.class);
+                current_user= dataSnapshot.getValue(Patient.class);
                 Log.d("usersdata",""+current_user.getName());
                 usr_name.setText(current_user.getName());
+
+                ArrayList<P_Exercise> loggedUsrEL = current_user.getP_exercises();
+
+
+                mHeader.setText(checkForTodayExercises(loggedUsrEL));
+
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -59,6 +71,23 @@ public class PatientMenuActivity extends AppCompatActivity {
         });
 
         initialPTmenu();
+    }
+
+    private String checkForTodayExercises(ArrayList<P_Exercise> loggedUsrEL) {
+
+        Calendar calendar = Calendar.getInstance();
+        int day =calendar.get(Calendar.DAY_OF_WEEK);
+        boolean haveEx=false;
+        for (int i=0;i<loggedUsrEL.size();i++)
+        {
+            if ( (loggedUsrEL.get(i).getWeekDaysArray().get(day) != 0) || (loggedUsrEL.get(i).getWeekDaysArray().get(day) == -1) ) {
+                haveEx = true;
+                Log.d("weekdays1", "" + loggedUsrEL.get(i).getWeekDaysArray().get(day));
+            }
+        }
+        if (haveEx) return "You have planned exercises for today!";
+
+        return "You have no planned exercises for today";
     }
 
     public void onBackPressed(){
@@ -76,7 +105,7 @@ public class PatientMenuActivity extends AppCompatActivity {
         findViewById(R.id.btn_perform_exercise_ptm).setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                // Intent intent = new Intent(PatientMenuActivity.this, SpinnerGame.class);
-                Intent intent = new Intent(PatientMenuActivity.this,SpinActivity.class);
+                Intent intent = new Intent(PatientMenuActivity.this,HitGameActivity.class);
                 startActivity(intent);
             }
         });
@@ -95,9 +124,6 @@ public class PatientMenuActivity extends AppCompatActivity {
         });
         qr_assign_btn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-//                Intent intent = new Intent(PatientMenuActivity.this, CreateNewExerciseActivity.class);
-//                startActivity(intent);
-                //
 
                 if (qr_flag){
                     qr_assign_btn.setImageResource(R.drawable.btn4_pt);
@@ -120,42 +146,6 @@ public class PatientMenuActivity extends AppCompatActivity {
                     }
                     qr_flag=true;
                 }
-
-                //
-//
-//                LayoutInflater layoutInflater
-//                        = (LayoutInflater)getBaseContext()
-//                        .getSystemService(LAYOUT_INFLATER_SERVICE);
-//                View popupView = layoutInflater.inflate(R.layout.popup, null);
-//
-//                final PopupWindow popupWindow = new PopupWindow(
-//                        popupView,
-//                        ActionBar.LayoutParams.WRAP_CONTENT,
-//                        ActionBar.LayoutParams.WRAP_CONTENT);
-//                ImageView qrImg = (ImageView)popupView.findViewById(R.id.qr_popup_image);
-//                MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
-//                try{
-//                    BitMatrix bitMatrix = multiFormatWriter.encode("hello", BarcodeFormat.QR_CODE,200,200);
-//                    BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
-//                    Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
-//                    qrImg.setImageBitmap(bitmap);
-//                    Toast.makeText(PatientMenuActivity.this,"ok" ,
-//                            Toast.LENGTH_SHORT).show();
-//
-//                }
-//                catch (WriterException e){
-//                    e.printStackTrace();
-//                }
-//
-//
-//                popupView.setOnClickListener(new Button.OnClickListener(){
-//                    @Override
-//                    public void onClick(View v) {
-//                        // TODO Auto-generated method stub
-//                        popupWindow.dismiss();
-//                    }});
-//
-//                popupWindow.showAsDropDown(findViewById(R.id.btn_exercises_list_ptm),0, 0);
 
 
             }});

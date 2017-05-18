@@ -1,5 +1,6 @@
 package com.example.idan.lungupfinal.CageGiverActivities;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,7 +13,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.idan.lungupfinal.AllUsersActivities.LoginActivity;
 import com.example.idan.lungupfinal.Chat.Chat;
+import com.example.idan.lungupfinal.Classes.Patient;
 import com.example.idan.lungupfinal.Classes.User;
 import com.example.idan.lungupfinal.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -43,13 +46,35 @@ public class CreateNewPatient extends AppCompatActivity {
     TextView info;
     ImageView image;
     String text2Qr;
+    private TextView mUsrName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_new_patient);
 
+
         mAuth1 = FirebaseAuth.getInstance();
+        mUsrName= (TextView)findViewById(R.id.user_name_tv);
+        findViewById(R.id.button_logout).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                mAuth1.signOut();
+                Intent intent = new Intent(CreateNewPatient.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+        FirebaseDatabase.getInstance().getReference().child("users").child(mAuth1.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Patient loggedPat = dataSnapshot.getValue(Patient.class);
+                mUsrName.setText(loggedPat.getName());
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+
+
 
         FirebaseOptions firebaseOptions = new FirebaseOptions.Builder()
                 .setDatabaseUrl("[https://lungupfinal.firebaseio.com/]")
@@ -110,9 +135,6 @@ public class CreateNewPatient extends AppCompatActivity {
                             ArrayList<String> newUsrRu = new ArrayList<String>();
                             newUsrRu.add(mAuth1.getCurrentUser().getUid().toString());
                             final User createdUser = new User(inputEmail.getText().toString(),inputName.getText().toString(),"PT",new_user_uid,false,newUsrRu);
-
-
-
 
                             FirebaseDatabase.getInstance().getReference().child("users").child(mAuth1.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
 

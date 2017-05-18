@@ -55,7 +55,6 @@ public class P_Exercise extends Exercise implements Serializable {
 
         super(id, type, exercise_name, description, imagePath, author_name, author_uid, isPrivate);
         this.schedule = schedule;
-
     }
 
     public P_Exercise(int id, String type, String exercise_name, String description, String imagePath, String author_name, String author_uid, boolean isPrivate) {
@@ -67,22 +66,31 @@ public class P_Exercise extends Exercise implements Serializable {
     }
 
     public String getFormattedSchedule(){
-        String sch = this.schedule;
-//        str = str.replaceAll("\\D+","");
-//        str = str.replaceAll("[^0-9]+", " ");
-        int sum = 0;
-        double avg;
-        for(int i = 0; i < sch.length() ; i++){
-            if( Character.isDigit(sch.charAt(i)) ){
-                sum = sum + Character.getNumericValue(sch.charAt(i));
+
+        ArrayList<Integer> arr = getWeekDaysArray();
+        if (arr.get(0) == -1) return "Unlimited Schedule";
+        return "Sun*" +arr.get(0)+ "|Mon*" +arr.get(1) +"|Tue*" +arr.get(2) + "|Wed*" +arr.get(3) + "|Thu*" + arr.get(4)+ "|Fri*" +arr.get(5) +"|Sat*" +arr.get(6);
+
+    }
+    public ArrayList<Integer> getWeekDaysArray(){
+
+        ArrayList<Integer> arrToReturn= new ArrayList<>();
+
+        for (int i=0;i<schedule.length();i++){
+            if (Character.isDigit(schedule.charAt(i))){
+                arrToReturn.add(Character.getNumericValue(schedule.charAt(i)));
             }
         }
-        if (sum==0){
-            return "Unlimited Schedule";
+        if (arrToReturn.size()==0) {
+            for (int i=0;i<7;i++){
+                arrToReturn.add(-1);
+            }
         }
-        avg = sum/7;
-        return ""+avg+" times per day";
+
+        return arrToReturn;
+
     }
+
 
     @Override
     public String toString() {
