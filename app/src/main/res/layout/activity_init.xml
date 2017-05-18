@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
     tools:context=".soundmeter.InitActivity"
-    android:background="@drawable/back">
+    android:background="@drawable/background_general">
+
+
+    <include
+        layout="@layout/view_header"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -20,30 +22,25 @@
         android:layout_centerHorizontal="true"
         android:visibility="invisible"/>
 
-    <RelativeLayout
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_above="@+id/progressBar"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="43dp">
 
-        <com.liulishuo.magicprogresswidget.MagicProgressCircle
-            android:id="@+id/panel_PRG_time"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:mpc_stroke_width="18dp"/>
+        <!--<com.liulishuo.magicprogresswidget.MagicProgressCircle-->
+            <!--android:id="@+id/panel_PRG_time"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--app:mpc_stroke_width="18dp"/>-->
 
         <TextView
             android:id="@+id/panel_LBL_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:layout_marginTop="40dp"
+            android:layout_gravity="center_horizontal"
             android:text="5"
-            android:textColor="#ffffff"
-            android:textSize="36sp" />
+            android:textColor="#5668b5"
+            android:textSize="150dp" />
 
-    </RelativeLayout>
+
 
     <ProgressBar
         style="?android:attr/progressBarStyleHorizontal"
@@ -56,6 +53,17 @@
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/panel_LBL_start"
+        android:background="@drawable/btn_start_init"
+        android:layout_gravity="center_horizontal"
+        android:textSize="35dp"
+        android:layout_marginTop="90dp"
+
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -76,16 +84,7 @@
 
         />
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:text="Start"
-
-        android:id="@+id/panel_LBL_start"
-        android:background="@drawable/btn_shape_bold"
-        android:textSize="35dp"
-        android:layout_alignBottom="@+id/panel_LBL_level"
-        android:layout_centerHorizontal="true" />
 
 
-</RelativeLayout>
+
+</LinearLayout>

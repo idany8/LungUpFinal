@@ -57,7 +57,7 @@ public class PatientExercisesList extends AppCompatActivity {
                 if (loggedPat.getP_exercises()!=null) {
                     ArrayList<P_Exercise> loggedUsrEL = loggedPat.getP_exercises();
 
-                    Log.d("weekdays",""+loggedUsrEL.get(2).getWeekDaysArray() );
+                //    Log.d("weekdays",""+loggedUsrEL.get(2).getWeekDaysArray() );
                     //
 
                     adapter = new ExerciseAdapterPat(loggedUsrEL,loggedPat);

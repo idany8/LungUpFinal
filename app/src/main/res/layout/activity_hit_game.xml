@@ -8,39 +8,13 @@
 
     <RelativeLayout
         android:id="@+id/container"
-        android:background="@drawable/back"
+        android:background="@drawable/background_general"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
 
-        <LinearLayout
-            android:id="@+id/header"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/btn_shape"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="User Name:"
-                android:id="@+id/txt_username"
-                android:textSize="20sp"
-                android:layout_weight="1"
-                />
-
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="High Score:"
-                android:id="@+id/txt_high_score"
-                android:textSize="20sp"
-                android:layout_weight="1"
-                />
-
-        </LinearLayout>
+        <include
+            layout="@layout/view_header"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -124,7 +98,7 @@
             android:id="@+id/bullet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/circle_bullet"
+            android:src="@drawable/target"
             android:layout_centerInParent="true"/>
     </RelativeLayout>
 

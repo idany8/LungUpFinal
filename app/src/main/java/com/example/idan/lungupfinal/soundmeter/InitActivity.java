@@ -37,7 +37,7 @@ private boolean flagButton=true;
     private float mSumSound;
     private int mCounter;
 
-    private MagicProgressCircle panel_PRG_time;
+    //private MagicProgressCircle panel_PRG_time;
 
     private Runnable mUpdateTimer = new Runnable() {
         @Override
@@ -157,9 +157,9 @@ private boolean flagButton=true;
     private void startTest() {
         Recorder.getInstance(InitActivity.this).startRecorder();
         AnimatorSet set = new AnimatorSet();
-        set.playTogether(
-                ObjectAnimator.ofFloat(panel_PRG_time, "percent", 0, 100 / 100f)
-        );
+ //       set.playTogether(
+               // ObjectAnimator.ofFloat(panel_PRG_time, "percent", 0, 100 / 100f)
+ //       );
         set.setDuration(5000);
         set.setInterpolator(new AccelerateInterpolator());
         set.start();
@@ -168,7 +168,7 @@ private boolean flagButton=true;
     }
 
     private void initializeVariables() {
-        panel_PRG_time = (MagicProgressCircle) findViewById(R.id.panel_PRG_time);
+      //  panel_PRG_time = (MagicProgressCircle) findViewById(R.id.panel_PRG_time);
         panel_LBL_time = (TextView) findViewById(R.id.panel_LBL_time);
         panel_LBL_level = (TextView) findViewById(R.id.panel_LBL_level);
         panel_LBL_start = (Button) findViewById(R.id.panel_LBL_start);

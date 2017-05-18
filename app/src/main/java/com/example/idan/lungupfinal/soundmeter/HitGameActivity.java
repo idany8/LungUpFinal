@@ -47,8 +47,8 @@ public class HitGameActivity extends AppCompatActivity {
     long userInitialTime;
     private TextView txt_sound_level;
     private TextView txt_score;
-    private TextView txt_username;
-    private TextView txt_highscore;
+   // private TextView txt_username;
+   // private TextView txt_highscore;
     private Button btn_start_game;
     private MagicProgressCircle timer_panel;
     private TextView timer_LBL;
@@ -56,7 +56,6 @@ public class HitGameActivity extends AppCompatActivity {
     private View blueBall;
     int score=0;
     String uName= FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
-
     DatabaseReference myRef;
 
     private Runnable mUpdateTimer = new Runnable() {
@@ -113,7 +112,7 @@ public class HitGameActivity extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_game);
+        setContentView(R.layout.activity_hit_game);
         setScreenSize();
         final RelativeLayout container = (RelativeLayout) findViewById(R.id.container);
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -127,25 +126,27 @@ public class HitGameActivity extends AppCompatActivity {
         userInitialTime = msp.getLongFromSharedPreferences("MIC_INIT_DATE",-1);
         if (userInitialValue!=-1){
             if (userInitialTime!=-1){
-                if (userInitialTime-System.currentTimeMillis() > 1000*60*60*24) {
+                long cu = System.currentTimeMillis();
+                long xx= System.currentTimeMillis()-userInitialTime;
+                if (System.currentTimeMillis()-userInitialTime > 1000*60*60*24) {
                     alertDialog("Your last microphone initialization is expired. please initial again.");
                 }
             }
-        }else alertDialog("Please initial your microphone first");
+        }else alertDialog("Please initial your microphone");
 
         Log.d("micInit", ""+userInitialValue );
        // userInitialValue = 5000;
        // userInitialValue = calculateMicValues(tmp);
 
         txt_sound_level = (TextView) findViewById(R.id.txt_sound_level);
-        txt_username = (TextView) findViewById(R.id.txt_username);
-        txt_highscore = (TextView) findViewById(R.id.txt_high_score);
+       // txt_username = (TextView) findViewById(R.id.txt_username);
+       // txt_highscore = (TextView) findViewById(R.id.txt_high_score);
 
         txt_score = (TextView) findViewById(R.id.txt_score);
         txt_score.setText("  " + score + "  ");
-        txt_username.setText("" + uName);
+      //  txt_username.setText("" + uName);
         btn_start_game = (Button) findViewById(R.id.btn_start_game);
-        txt_highscore.setText("High Score:" + msp.getIntFromSharedPrefernces("highScore", 0));
+     //   txt_highscore.setText("High Score:" + msp.getIntFromSharedPrefernces("highScore", 0));
 
         btn_start_game.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -229,7 +230,6 @@ private void startGame(final RelativeLayout container){
                 if ((value > userInitialValue)) {
                     checkBall(img_hit, img_miss);
 
-
                 }
 
             }
@@ -255,7 +255,7 @@ private void startGame(final RelativeLayout container){
 
             img_hit.setVisibility(View.VISIBLE);
             score+=5;
-            txt_score.setText(""+score);
+            //txt_score.setText(""+score);
           //  txt_score.setText(score);
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -272,7 +272,7 @@ private void startGame(final RelativeLayout container){
             img_miss.setVisibility(View.VISIBLE);
             score-=2;
             txt_score.setText(""+score);
-           // txt_score.setText(score);
+            //txt_score.setText(score);
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -314,7 +314,7 @@ private void startGame(final RelativeLayout container){
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutParams.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
         imageView.setLayoutParams(layoutParams);
-        imageView.setImageResource(R.drawable.circle_blue);
+        imageView.setImageResource(R.drawable.strawberry);
         return imageView;
     }
     private View createRedBallView() {
@@ -322,7 +322,7 @@ private void startGame(final RelativeLayout container){
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutParams.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
         imageView.setLayoutParams(layoutParams);
-        imageView.setImageResource(R.drawable.circle_red);
+        imageView.setImageResource(R.drawable.banana);
         return imageView;
     }
 
