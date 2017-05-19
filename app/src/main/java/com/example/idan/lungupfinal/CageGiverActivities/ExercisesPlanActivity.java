@@ -196,7 +196,7 @@ public class ExercisesPlanActivity extends AppCompatActivity {
             holder.title.setText(pex.getExercise_name());
 
             holder.genre.setText(pex.getDescription());
-            holder.year.setText(pex.getSchedule());
+            holder.year.setText(pex.getFormattedSchedule());
             holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

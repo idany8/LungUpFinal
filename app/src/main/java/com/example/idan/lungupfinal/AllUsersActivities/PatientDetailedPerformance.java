@@ -235,7 +235,7 @@ public class PatientDetailedPerformance extends AppCompatActivity {
     }
 
     private void initLineChart(ArrayList<Entry> scoresEntryList,ArrayList<String> xVals) {
-        LineDataSet set = new LineDataSet(scoresEntryList, "Usage");
+        LineDataSet set = new LineDataSet(scoresEntryList, "Scores");
         set.setColor(Color.BLACK);
         LineData data = new LineData(xVals, set);
 
@@ -248,7 +248,7 @@ public class PatientDetailedPerformance extends AppCompatActivity {
     }
 
     private void initBarChart(ArrayList<BarEntry> entries,ArrayList<String> xVals ) {
-        BarDataSet dataset = new BarDataSet(entries, "Usage number");
+        BarDataSet dataset = new BarDataSet(entries, "Usages number");
         BarData data = new BarData(xVals, dataset);
         barChart.setData(data);
         barChart.setVisibleXRangeMaximum(10L);

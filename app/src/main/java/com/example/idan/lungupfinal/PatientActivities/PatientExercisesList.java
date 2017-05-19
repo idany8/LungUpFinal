@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.idan.lungupfinal.AllUsersActivities.LoginActivity;
@@ -103,14 +104,14 @@ public class PatientExercisesList extends AppCompatActivity {
         }
         public class MyViewHolder extends RecyclerView.ViewHolder {
             public TextView title, year, genre;
-            public View playBtn;
+            public ImageView playBtn;
 
             public MyViewHolder(View view) {
                 super(view);
                 title = (TextView) view.findViewById(R.id.title);
                 genre = (TextView) view.findViewById(R.id.genre);
                 year = (TextView) view.findViewById(R.id.year);
-                playBtn = view.findViewById(R.id.btn_pat_el_play);
+                playBtn = (ImageView) view.findViewById(R.id.btn_pat_el_play);
             }
         }
 

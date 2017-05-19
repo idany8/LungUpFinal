@@ -95,8 +95,6 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 setTitle("Chat with " + ((String) dataSnapshot.child("name").getValue()).split(" ")[0]);
-
-
             }
 
             @Override
@@ -106,7 +104,6 @@ public class ChatActivity extends AppCompatActivity {
         });
 
 
-        //currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
         messageRecyclerView = (RecyclerView) findViewById(R.id.chat_recycler_view);
         linearLayoutManager = new LinearLayoutManager(this);
 

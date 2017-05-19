@@ -35,11 +35,12 @@
         android:layout_below="@id/genre"
         android:layout_height="wrap_content" />
 
-    <View
+    <ImageView
         android:id="@+id/btn_pat_el_play"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:background="#FF0000"
+        android:src="@drawable/small_play"
+        android:background="@null"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"/>
 

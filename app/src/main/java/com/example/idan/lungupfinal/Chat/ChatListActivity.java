@@ -52,7 +52,10 @@ public class ChatListActivity extends AppCompatActivity {
         linearLayoutManager = new LinearLayoutManager(this);
         //emptyView = (LinearLayout)view.findViewById(R.id.empty_view);
         ref = FirebaseDatabase.getInstance().getReference();
+
         DatabaseReference userRef = ref.child(CHATS + FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+
 
         firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Chat, ChatViewHolder>(
                 Chat.class,

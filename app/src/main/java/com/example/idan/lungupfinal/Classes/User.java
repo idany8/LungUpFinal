@@ -32,7 +32,6 @@ public class User {
         this.related_users_uid = related_users_uid;
     }
 
-
     public String getEmail() {
         return email;
     }

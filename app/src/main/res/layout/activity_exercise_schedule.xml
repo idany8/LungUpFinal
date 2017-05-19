@@ -17,6 +17,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="Search"
+        android:backgroundTint="#5668b5"
 
         />
     <ListView
@@ -163,10 +164,12 @@
         android:layout_height="wrap_content"
         android:id="@+id/checkBox_sch_unlimited" />
 
-    <Button
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="UPDATE"
+        android:src="@drawable/btn_update"
+        android:background="@null"
         android:layout_gravity="center"
         android:id="@+id/btn_sch_update"/>
 
