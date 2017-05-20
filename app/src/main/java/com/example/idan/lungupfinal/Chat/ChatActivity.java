@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.idan.lungupfinal.Classes.Notification;
 import com.example.idan.lungupfinal.R;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 
@@ -36,6 +37,7 @@ public class ChatActivity extends AppCompatActivity {
     private String chatId;
     private String currentUserName;
     private String currentRecevierId;
+    private String receiverToken=null;
 
 
 
@@ -87,14 +89,29 @@ public class ChatActivity extends AppCompatActivity {
             chatId = extras.getString("chatId");
             currentRecevierId = chatId;
         }
+        getCurrentUserName();
         ref = FirebaseDatabase.getInstance().getReference();
+
         //get data from activity
         //getRecieverToken(chatId);
 
+//        FirebaseDatabase.getInstance().getReference().child("users").child(chatId).addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                setTitle("Chat with " + ((String) dataSnapshot.child("name").getValue()).split(" ")[0]);
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
         FirebaseDatabase.getInstance().getReference().child("users").child(chatId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                setTitle("Chat with " + ((String) dataSnapshot.child("name").getValue()).split(" ")[0]);
+                if(dataSnapshot.hasChild("token"))
+                    receiverToken = dataSnapshot.child("token").getValue().toString();
+
             }
 
             @Override
@@ -102,7 +119,6 @@ public class ChatActivity extends AppCompatActivity {
 
             }
         });
-
 
         messageRecyclerView = (RecyclerView) findViewById(R.id.chat_recycler_view);
         linearLayoutManager = new LinearLayoutManager(this);
@@ -172,6 +188,9 @@ public class ChatActivity extends AppCompatActivity {
         String senderId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference senderRef = FirebaseDatabase.getInstance().getReference().child("chats").child(senderId).child(currentRecevierId);
         DatabaseReference receiverRef = FirebaseDatabase.getInstance().getReference().child("chats").child(currentRecevierId).child(senderId);
+        if (receiverToken!=null)
+            FirebaseDatabase.getInstance().getReference().child("notifications").push().setValue(new Notification(currentUserName,messageText,receiverToken));
+
         String key = senderRef.push().getKey();
         Message message = new Message(messageText, currentUserName, senderId);
 //        senderRef.child("messages").child(key).setValue(message);

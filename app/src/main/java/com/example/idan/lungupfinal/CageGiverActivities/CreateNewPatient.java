@@ -112,7 +112,6 @@ public class CreateNewPatient extends AppCompatActivity {
         });
 
         image = (ImageView) findViewById(R.id.image);
-
     }
 
     private void createAccount(final String email, final String password) {
@@ -185,7 +184,7 @@ public class CreateNewPatient extends AppCompatActivity {
                         }
 
 
-                        // ...
+
                     }
                 });
 

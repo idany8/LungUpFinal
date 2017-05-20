@@ -2,6 +2,7 @@ package com.example.idan.lungupfinal.soundmeter;
 
 import android.content.Context;
 import android.media.MediaRecorder;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.idan.lungupfinal.Classes.MySharedPreferences;
@@ -118,15 +119,17 @@ public class Recorder {
         if (max  > 32000)
             val= max-8000;
         else {
-            if (max + 8000 > 32000) {
-                val=  average - 8000;
-            } else
-                val=  max + 8000;
+            val = average+5000;
+//            if (average + 5000 > )
+//            if (max + 8000 > 32000) {
+//                val=  average - 8000;
+//            } else
+//                val=  max + 8000;
         }
 
         msp.putIntIntoSharedPrefernces("MIC_INIT_VALUE",(int)val);
         msp.putLongIntoSharedPrefernces("MIC_INIT_DATE",System.currentTimeMillis());
-
+        Log.d("micInitialCalc","avarage:" + average + "max:" + max + "total:" + (int)val ) ;
     }
 
     public void saveData(float average, float max, int score) {

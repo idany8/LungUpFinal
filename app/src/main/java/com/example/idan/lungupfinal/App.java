@@ -21,13 +21,13 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        MySharedPreferences msp = new MySharedPreferences(this);
-        Log.d("starting App", "in");
-
-        if (!msp.getBooleanFromSharedPreferences("ALARM_SET",false)) {
-            createAlarmNotifications();
-            msp.putBooleanIntoSharedPrefernces("ALARM_SET",true);
-                            }
+//        MySharedPreferences msp = new MySharedPreferences(this);
+//        Log.d("starting App", "in");
+//
+//        if (!msp.getBooleanFromSharedPreferences("ALARM_SET",false)) {
+//            createAlarmNotifications();
+//            msp.putBooleanIntoSharedPrefernces("ALARM_SET",true);
+//                            }
     }
 
     private void createAlarmNotifications() {

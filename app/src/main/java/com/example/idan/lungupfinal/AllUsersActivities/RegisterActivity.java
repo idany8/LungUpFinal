@@ -26,6 +26,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 public class RegisterActivity extends AppCompatActivity {
     private static final String TAG = "EmailPassword";
@@ -88,6 +89,9 @@ public class RegisterActivity extends AppCompatActivity {
                             String ut= getUserType();
                             User createdUser = new User(nUserEmail,nUserName,ut,mAuth.getCurrentUser().getUid().toString(),false,null);
                             FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getCurrentUser().getUid().toString()).setValue(createdUser);
+
+                            ref.child("users").child(task.getResult().getUser().getUid()).child("token").setValue(FirebaseInstanceId.getInstance().getToken());
+
                             intentToUserType();
                             //FirebaseUser user = mAuth.getCurrentUser();
                             //  updateUI(user);

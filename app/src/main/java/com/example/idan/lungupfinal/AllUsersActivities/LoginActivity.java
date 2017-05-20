@@ -51,8 +51,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-        Log.d("FCM", "Refreshed token: " + refreshedToken);
+
         mEmailField = (EditText) findViewById(R.id.et_username);
         mPasswordField = (EditText) findViewById(R.id.et_password);
         mPasswordField.setTransformationMethod(new PasswordTransformationMethod());
@@ -163,6 +162,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             // Sign in success, update UI with the signed-in user's information
                             //Log.d(TAG, "signInWithEmail:success");
                             //FirebaseUser user = mAuth.getCurrentUser();
+                            ref.child("users").child(task.getResult().getUser().getUid()).child("token").setValue(FirebaseInstanceId.getInstance().getToken());
+
                             intentToUserType();
                         } else {
                             // If sign in fails, display a message to the user.

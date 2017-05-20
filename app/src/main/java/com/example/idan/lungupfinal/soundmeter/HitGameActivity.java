@@ -80,29 +80,6 @@ public class HitGameActivity extends AppCompatActivity {
        // myRef.push().setValue(su);
         onBackPressed();
     }
-    static int calculateMicValues(String str)
-    {
-        int i=0;
-        int[] arr = new int[2];
-        String tmp;
-        tmp=(str.split("\\n")[1]);
-        Pattern p = Pattern.compile("(\\d+)");
-        Matcher m = p.matcher(tmp);
-        while(m.find())
-        {
-            arr[i] = Integer.parseInt((m.group(1)));
-            i++;
-        }
-
-        if (arr[1]  > 32000)
-            return arr[1]-8000;
-        else {
-            if (arr[0] + 8000 > 32000) {
-                return arr[1] - 8000;
-            } else
-                return arr[0] + 8000;
-        }
-    }
 
     @Override
     public void onBackPressed() {
@@ -128,7 +105,7 @@ public class HitGameActivity extends AppCompatActivity {
             if (userInitialTime!=-1){
                 long cu = System.currentTimeMillis();
                 long xx= System.currentTimeMillis()-userInitialTime;
-                if (System.currentTimeMillis()-userInitialTime > 1000*60*60*24) {
+                if (System.currentTimeMillis()-userInitialTime > 60000) {
                     alertDialog("Your last microphone initialization is expired. please initial again.");
                 }
             }
@@ -255,7 +232,7 @@ private void startGame(final RelativeLayout container){
 
             img_hit.setVisibility(View.VISIBLE);
             score+=5;
-            //txt_score.setText(""+score);
+            txt_score.setText(""+score);
           //  txt_score.setText(score);
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -271,6 +248,7 @@ private void startGame(final RelativeLayout container){
 
             img_miss.setVisibility(View.VISIBLE);
             score-=2;
+            if (score<0) score=0;
             txt_score.setText(""+score);
             //txt_score.setText(score);
             new Handler().postDelayed(new Runnable() {

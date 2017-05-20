@@ -1,5 +1,7 @@
 package com.example.idan.lungupfinal.PatientActivities;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -14,8 +16,10 @@ import com.example.idan.lungupfinal.AllUsersActivities.LoginActivity;
 import com.example.idan.lungupfinal.AllUsersActivities.PatientDetailedPerformance;
 import com.example.idan.lungupfinal.AllUsersActivities.SettingsActivity;
 import com.example.idan.lungupfinal.Chat.ChatListActivity;
+import com.example.idan.lungupfinal.Classes.MySharedPreferences;
 import com.example.idan.lungupfinal.Classes.P_Exercise;
 import com.example.idan.lungupfinal.Classes.Patient;
+import com.example.idan.lungupfinal.NotificationReciever;
 import com.example.idan.lungupfinal.R;
 import com.example.idan.lungupfinal.SpinnerGame;
 import com.example.idan.lungupfinal.soundmeter.HitGameActivity;
@@ -25,6 +29,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
@@ -49,6 +54,7 @@ public class PatientMenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_patient_menu);
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).child("token").setValue(FirebaseInstanceId.getInstance().getToken());
        // img_popup_qr = (ImageView)findViewById(R.id.qr_popup_image);
         qr_assign_btn = (ImageView) findViewById (R.id.btn_assign_care_giver_ptm);
         usr_name = (TextView)findViewById(R.id.user_name_tv);
@@ -63,7 +69,9 @@ public class PatientMenuActivity extends AppCompatActivity {
                 ArrayList<P_Exercise> loggedUsrEL = current_user.getP_exercises();
 
 
-                mHeader.setText(checkForTodayExercises(loggedUsrEL));
+                if (havePlannedExercisesToday(loggedUsrEL)) {
+                    mHeader.setText("You have planned exercises for today!");
+                }else mHeader.setText("You have no planned exercises for today");
 
             }
             @Override
@@ -74,25 +82,28 @@ public class PatientMenuActivity extends AppCompatActivity {
         initialPTmenu();
     }
 
-    private String checkForTodayExercises(ArrayList<P_Exercise> loggedUsrEL) {
 
+
+
+
+
+
+
+    public static Boolean havePlannedExercisesToday(ArrayList<P_Exercise> loggedUsrEL) {
         Calendar calendar = Calendar.getInstance();
         int day =calendar.get(Calendar.DAY_OF_WEEK);
         boolean haveEx=false;
         for (int i=0;i<loggedUsrEL.size();i++)
         {
-            if ( (loggedUsrEL.get(i).getWeekDaysArray().get(day) != 0) || (loggedUsrEL.get(i).getWeekDaysArray().get(day) == -1) ) {
+            if ( (loggedUsrEL.get(i).getWeekDaysArray().get(day-1) != 0) || (loggedUsrEL.get(i).getWeekDaysArray().get(day-1) == -1) ) {
                 haveEx = true;
-                Log.d("weekdays1", "" + loggedUsrEL.get(i).getWeekDaysArray().get(day));
+                Log.d("weekdays1", "" + loggedUsrEL.get(i).getWeekDaysArray().get(day-1));
             }
         }
-        if (haveEx) return "You have planned exercises for today!";
-
-        return "You have no planned exercises for today";
+        return haveEx;
     }
 
     public void onBackPressed(){
-
     }
     private void initialPTmenu(){
 
@@ -106,7 +117,7 @@ public class PatientMenuActivity extends AppCompatActivity {
         findViewById(R.id.btn_perform_exercise_ptm).setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                // Intent intent = new Intent(PatientMenuActivity.this, SpinnerGame.class);
-                Intent intent = new Intent(PatientMenuActivity.this,SpinnerGame.class);
+                Intent intent = new Intent(PatientMenuActivity.this,HitGameActivity.class);
                 startActivity(intent);
             }
         });

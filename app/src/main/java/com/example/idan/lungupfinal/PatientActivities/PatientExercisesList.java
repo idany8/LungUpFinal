@@ -115,7 +115,6 @@ public class PatientExercisesList extends AppCompatActivity {
             }
         }
 
-
         public ExerciseAdapterPat(ArrayList<P_Exercise> pexList, Patient patient) {
             this.pexList = pexList;
             this.patient = patient;
@@ -146,6 +145,7 @@ public class PatientExercisesList extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     Log.d("chosen", ""+ position);
+
                     Intent intent = new Intent(PatientExercisesList.this, PerformCustomExercise.class);
                     intent.putExtra("P_EXERCISE_TO_PERFORM", pexList.get(position).getId()); //second param is Serializable
                     startActivity(intent);
