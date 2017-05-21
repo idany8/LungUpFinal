@@ -8,6 +8,9 @@
     <string name="spinner_desc">
     In this exercise your goal is to exhale as long as you can and spin the windvane.\nTry to perform few sessions before leaving.
     </string>
+    <string name="hit_desc">
+    In this exercise your goal is to hit the strawberries with exhale!\n take a deep breath between shooting.
+    </string>
     <string name="msg_mic_error">Sorry, Unable to open MIC !!</string>
 
 </resources>

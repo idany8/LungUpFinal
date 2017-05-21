@@ -16,6 +16,7 @@ import com.example.idan.lungupfinal.AllUsersActivities.LoginActivity;
 import com.example.idan.lungupfinal.AllUsersActivities.PatientDetailedPerformance;
 import com.example.idan.lungupfinal.AllUsersActivities.SettingsActivity;
 import com.example.idan.lungupfinal.Chat.ChatListActivity;
+import com.example.idan.lungupfinal.Classes.Exercise;
 import com.example.idan.lungupfinal.Classes.MySharedPreferences;
 import com.example.idan.lungupfinal.Classes.P_Exercise;
 import com.example.idan.lungupfinal.Classes.Patient;
@@ -56,6 +57,7 @@ public class PatientMenuActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).child("token").setValue(FirebaseInstanceId.getInstance().getToken());
+
        // img_popup_qr = (ImageView)findViewById(R.id.qr_popup_image);
         qr_assign_btn = (ImageView) findViewById (R.id.btn_assign_care_giver_ptm);
         usr_name = (TextView)findViewById(R.id.user_name_tv);
@@ -65,10 +67,18 @@ public class PatientMenuActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 current_user= dataSnapshot.getValue(Patient.class);
                 Log.d("usersdata",""+current_user.getName());
+                if (!current_user.isInitialized()){
+                    P_Exercise hit = new P_Exercise(100,"game","Shooting Game",getResources().getString(R.string.hit_desc),"","","",false,"SUMUTUWUTUFUSU");
+                    P_Exercise spinner = new P_Exercise(101,"game","WindVane Game",getResources().getString(R.string.spinner_desc),"","","",false,"SUMUTUWUTUFUSU");
+                    ArrayList<P_Exercise> initExercises = new ArrayList<P_Exercise>();
+                    initExercises.add(hit);
+                    initExercises.add(spinner);
+                    FirebaseDatabase.getInstance().getReference().child("users").child(current_user.getUid()).child("p_exercises").setValue(initExercises);
+                    FirebaseDatabase.getInstance().getReference().child("users").child(current_user.getUid()).child("initialized").setValue(true);
+                }
                 usr_name.setText(current_user.getName());
 
                 ArrayList<P_Exercise> loggedUsrEL = current_user.getP_exercises();
-
 
                 if (havePlannedExercisesToday(loggedUsrEL)) {
                     mHeader.setText("You have planned exercises for today!");
@@ -119,7 +129,7 @@ public class PatientMenuActivity extends AppCompatActivity {
         findViewById(R.id.btn_perform_exercise_ptm).setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                // Intent intent = new Intent(PatientMenuActivity.this, SpinnerGame.class);
-                Intent intent = new Intent(PatientMenuActivity.this,SpinnerGame.class);
+                Intent intent = new Intent(PatientMenuActivity.this,HitGameActivity.class);
                 startActivity(intent);
             }
         });

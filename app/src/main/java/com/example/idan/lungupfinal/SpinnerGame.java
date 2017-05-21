@@ -1,7 +1,10 @@
 package com.example.idan.lungupfinal;
 
+import android.*;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -14,13 +17,22 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.idan.lungupfinal.Classes.MySharedPreferences;
+import com.example.idan.lungupfinal.Classes.P_Exercise;
+import com.example.idan.lungupfinal.Classes.PerfUnit;
 import com.example.idan.lungupfinal.soundmeter.IRecorderUpdateListener;
 import com.example.idan.lungupfinal.soundmeter.InitActivity;
 import com.example.idan.lungupfinal.soundmeter.Recorder;
 import com.example.idan.lungupfinal.soundmeter.SpinActivity;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -45,9 +57,10 @@ public class SpinnerGame extends AppCompatActivity {
     private boolean isAnimationRunning,isTimerRunning=false;
     private Timer t=new Timer();
     private double TimeCounter = 0;
-    private double maxValue=0,sumValue=0, triesNum=0;
-
-
+    private double maxValue=0,sumValue=0, triesNum=0,avgValue=0;
+    P_Exercise pexToPerform;
+    private FirebaseAuth mAuth;
+    private ArrayList<P_Exercise> patArrPex;
     private Runnable mUpdateTimer = new Runnable() {
         @Override
         public void run() {
@@ -68,7 +81,7 @@ public class SpinnerGame extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_spinner_game);
-
+        checkMicPermission();
         initScreen();
         startRotationAnimation();
         MySharedPreferences msp = new MySharedPreferences(this);
@@ -88,8 +101,8 @@ public class SpinnerGame extends AppCompatActivity {
             public void onSoundUpdate(float value) {
 //                mCur.setText(""+value);
                 curDb=value;
-                Log.d("soundd", curDb+"");
-                Log.d("soundd2", userInitialValue+"");
+              //  Log.d("soundd", curDb+"");
+              //  Log.d("soundd2", userInitialValue+"");
 
 
                 if (spinnerStarted) {
@@ -122,7 +135,7 @@ public class SpinnerGame extends AppCompatActivity {
                         if (isTimerRunning) {
                             isTimerRunning = false;
                             t.cancel();//stopping the timer when ready to stop.
-                            Log.d("sound3", ""+ (TimeCounter-0.5));
+                           // Log.d("sound3", ""+ (TimeCounter-0.5));
                             updateSessionVals(TimeCounter-0.5);
                             t= new Timer();
                         }
@@ -141,6 +154,31 @@ public class SpinnerGame extends AppCompatActivity {
 
     }
 
+    private void checkMicPermission() {
+        // Check the SDK version and whether the permission is already granted or not.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(android.Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{android.Manifest.permission.RECORD_AUDIO}, 111);
+            //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
+        } else {
+            // Android version is lesser than 6.0 or the permission is already granted.
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 111: {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permission is granted
+                    Toast.makeText(this, "grant the permission", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "Until you grant the permission, App cannot work.", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+            }
+        }
+    }
+
     private void updateSessionVals(double val) {
         if (val>maxValue){
             maxValue=val;
@@ -148,7 +186,8 @@ public class SpinnerGame extends AppCompatActivity {
         }
         triesNum++;
         sumValue+=val;
-        mAvg.setText(String.format("%.1fs"+"\nAvg",sumValue/triesNum));
+        avgValue = sumValue/triesNum;
+        mAvg.setText(String.format("%.1fs"+"\nAvg",avgValue));
     }
 
     @Override
@@ -190,6 +229,37 @@ public class SpinnerGame extends AppCompatActivity {
  //       btnStart = (Button) findViewById(R.id.spn_btn_start);
         mCancelBtn = (ImageButton) findViewById(R.id.spn_btn_cancel);
         mDoneBtn = (ImageButton) findViewById(R.id.spn_btn_done);
+        mDoneBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pexToPerform = new P_Exercise();
+                patArrPex = new ArrayList<P_Exercise>();
+                mAuth = FirebaseAuth.getInstance();
+                FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getCurrentUser().getUid()).child("p_exercises").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        for (DataSnapshot child : dataSnapshot.getChildren()) {
+                            P_Exercise item = child.getValue(P_Exercise.class);
+                            Log.d("checkPex", "" + item);
+                            if (item.getId()== 101){
+                                pexToPerform = item;
+                            }else patArrPex.add(item);
+                        }
+                        pexToPerform.addRecords(new PerfUnit(System.currentTimeMillis(),avgValue,pexToPerform.getExercise_name()));
+                        patArrPex.add(pexToPerform);
+                        FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getCurrentUser().getUid()).child("p_exercises").setValue(patArrPex);
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.d("checkPex", "rrrrr");
+                    }
+
+                });
+            }
+        });
         t = new Timer();
     }
 

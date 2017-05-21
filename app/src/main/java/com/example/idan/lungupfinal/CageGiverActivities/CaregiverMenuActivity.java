@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.example.idan.lungupfinal.Chat.Chat;
 import com.example.idan.lungupfinal.Chat.ChatListActivity;
 import com.example.idan.lungupfinal.AllUsersActivities.LoginActivity;
+import com.example.idan.lungupfinal.Classes.Exercise;
 import com.example.idan.lungupfinal.Classes.Patient;
 import com.example.idan.lungupfinal.R;
 import com.example.idan.lungupfinal.Classes.User;
@@ -53,6 +54,7 @@ public class CaregiverMenuActivity extends AppCompatActivity implements View.OnC
             public void onCancelled(DatabaseError databaseError) {
             }
         });
+       initAnimatedGames();
 
         findViewById(R.id.btn_assigned_ptns_cgmenu).setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
@@ -126,7 +128,15 @@ public class CaregiverMenuActivity extends AppCompatActivity implements View.OnC
             integrator.initiateScan();
         }
     }
+    private void initAnimatedGames() {
+        Exercise hit = new Exercise(100,"game","Shooting Game",getResources().getString(R.string.hit_desc),"","","",false);
+        DatabaseReference newRef = mDatabase.child("exercises").push();
+        newRef.setValue(hit);
 
+        Exercise spinner = new Exercise(101,"game","WindVane Game",getResources().getString(R.string.spinner_desc),"","","",false);
+        newRef = mDatabase.child("exercises").push();
+        newRef.setValue(spinner);
+    }
     public User parseData(DataSnapshot dataSnapshot) {
         User user = new User();
 

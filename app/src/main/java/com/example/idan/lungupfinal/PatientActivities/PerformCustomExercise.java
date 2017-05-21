@@ -70,6 +70,7 @@ public class PerformCustomExercise extends AppCompatActivity {
                         pexToPerform = item;
                     }else patArrPex.add(item);
                 }
+
                 initialCustomExercise();
             }
 

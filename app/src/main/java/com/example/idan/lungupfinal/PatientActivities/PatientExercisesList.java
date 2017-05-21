@@ -17,6 +17,8 @@ import com.example.idan.lungupfinal.AllUsersActivities.LoginActivity;
 import com.example.idan.lungupfinal.Classes.P_Exercise;
 import com.example.idan.lungupfinal.Classes.Patient;
 import com.example.idan.lungupfinal.R;
+import com.example.idan.lungupfinal.SpinnerGame;
+import com.example.idan.lungupfinal.soundmeter.HitGameActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -145,11 +147,17 @@ public class PatientExercisesList extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     Log.d("chosen", ""+ position);
-
-                    Intent intent = new Intent(PatientExercisesList.this, PerformCustomExercise.class);
-                    intent.putExtra("P_EXERCISE_TO_PERFORM", pexList.get(position).getId()); //second param is Serializable
-                    startActivity(intent);
-
+                    if (pexList.get(position).getId()==100){
+                        Intent intent = new Intent(PatientExercisesList.this, HitGameActivity.class);
+                        startActivity(intent);
+                    }else if (pexList.get(position).getId()==101){
+                        Intent intent = new Intent(PatientExercisesList.this, SpinnerGame.class);
+                        startActivity(intent);
+                    }else {
+                        Intent intent = new Intent(PatientExercisesList.this, PerformCustomExercise.class);
+                        intent.putExtra("P_EXERCISE_TO_PERFORM", pexList.get(position).getId()); //second param is Serializable
+                        startActivity(intent);
+                    }
                     // BUG in the second time using this intent ************
 
 //                    pexList.remove(position);

@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.idan.lungupfinal.CageGiverActivities.CaregiverMenuActivity;
+import com.example.idan.lungupfinal.Classes.Exercise;
 import com.example.idan.lungupfinal.Classes.User;
 import com.example.idan.lungupfinal.PatientActivities.PatientMenuActivity;
 import com.example.idan.lungupfinal.R;
@@ -68,7 +69,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         //mAuth.signOut();
         ref = FirebaseDatabase.getInstance().getReference();
 
+
     }
+
+
 
     public void onStart()
     {
