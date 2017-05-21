@@ -31,9 +31,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.liulishuo.magicprogresswidget.MagicProgressCircle;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 public class HitGameActivity extends AppCompatActivity {
 
     private int mHeight;
@@ -105,7 +102,7 @@ public class HitGameActivity extends AppCompatActivity {
             if (userInitialTime!=-1){
                 long cu = System.currentTimeMillis();
                 long xx= System.currentTimeMillis()-userInitialTime;
-                if (System.currentTimeMillis()-userInitialTime > 60000) {
+                if (System.currentTimeMillis()-userInitialTime > 600000) {
                     alertDialog("Your last microphone initialization is expired. please initial again.");
                 }
             }
@@ -176,26 +173,54 @@ private void startGame(final RelativeLayout container){
         set.start();
         blueBall = createBlueBallView();
         container.addView(blueBall);
-        View redBall1 = createRedBallView();
+        View redBall1 = createRedBallView(false);
         container.addView(redBall1);
-        startTranslateAnimation(redBall1);
+        startTranslateAnimationX(redBall1);
 
 
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
 
-                startTranslateAnimation(blueBall);
+                startTranslateAnimationX(blueBall);
             }
         }, 600);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                View redBall2 = createRedBallView();
+                View redBall2 = createRedBallView(false);
                 container.addView(redBall2);
-                startTranslateAnimation(redBall2);
+                startTranslateAnimationX(redBall2);
             }
         }, 1200);
+
+    new Handler().postDelayed(new Runnable() {
+        @Override
+        public void run() {
+            View redBall2 = createRedBallView(true, false);
+            container.addView(redBall2);
+            startTranslateAnimationXY(redBall2);
+        }
+    }, 1200);
+
+    new Handler().postDelayed(new Runnable() {
+        @Override
+        public void run() {
+            View redBall2 = createRedBallView(true);
+            container.addView(redBall2);
+            startTranslateAnimationY(redBall2);
+        }
+    }, 1200);
+
+    new Handler().postDelayed(new Runnable() {
+        @Override
+        public void run() {
+            View redBall2 = createRedBallView(true);
+            container.addView(redBall2);
+            startTranslateAnimationY(redBall2);
+        }
+    }, 1600);
+
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
@@ -295,18 +320,64 @@ private void startGame(final RelativeLayout container){
         imageView.setImageResource(R.drawable.strawberry);
         return imageView;
     }
-    private View createRedBallView() {
+
+    private View createRedBallView(boolean forVerticalMovement) {
+        return createRedBallView(false, forVerticalMovement);
+    }
+
+    private View createRedBallView(boolean withoutRules, boolean forVerticalMovement) {
         ImageView imageView = new ImageView(HitGameActivity.this);
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        layoutParams.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
+        if (!withoutRules) {
+            if (forVerticalMovement) {
+                layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
+            } else {
+                layoutParams.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
+                //layoutParams.addRule(RelativeLayout.ALIGN_BOTTOM, RelativeLayout.TRUE);
+            }
+        }
+
         imageView.setLayoutParams(layoutParams);
         imageView.setImageResource(R.drawable.banana);
         return imageView;
     }
 
-    private void startTranslateAnimation(View view) {
+    private void startTranslateAnimationXY(View view) {
         ObjectAnimator translationAnimator = ObjectAnimator.ofFloat(view,
                 "translationX", 0, mWidth);
+
+        ObjectAnimator translationAnimatorY = ObjectAnimator.ofFloat(view,
+                "translationY", 0, mHeight);
+        translationAnimator.setDuration(5000);
+        translationAnimator.setRepeatMode(ValueAnimator.REVERSE);
+        translationAnimator.setRepeatCount(20);
+
+        translationAnimatorY.setDuration(5000);
+        translationAnimatorY.setRepeatMode(ValueAnimator.REVERSE);
+        translationAnimatorY.setRepeatCount(20);
+
+
+        AnimatorSet set = new AnimatorSet();
+        set.playTogether(translationAnimator, translationAnimatorY);
+
+
+        set.start();
+    }
+
+    private void startTranslateAnimationX(View view) {
+        ObjectAnimator translationAnimator = ObjectAnimator.ofFloat(view,
+                "translationX", 0, mWidth);
+
+        translationAnimator.setDuration(5000);
+        translationAnimator.setRepeatMode(ValueAnimator.REVERSE);
+        translationAnimator.setRepeatCount(20);
+        translationAnimator.start();
+    }
+
+    private void startTranslateAnimationY(View view) {
+        //view.setX(mWidth / 2);
+        ObjectAnimator translationAnimator = ObjectAnimator.ofFloat(view,
+                "translationY", 0, mHeight);
 
         translationAnimator.setDuration(5000);
         translationAnimator.setRepeatMode(ValueAnimator.REVERSE);

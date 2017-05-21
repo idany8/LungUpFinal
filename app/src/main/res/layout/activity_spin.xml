@@ -10,6 +10,12 @@
     android:tileMode="repeat"
     tools:context="com.example.nexus.soundmeter.SpinActivity" >
 
+    <View
+        android:id="@+id/btn"
+        android:layout_height="50dp"
+        android:layout_width="50dp"
+        android:background="#ff0000"/>
+
     <ImageView
         android:id="@+id/imageView1"
         android:layout_width="wrap_content"

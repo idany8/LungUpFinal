@@ -23,6 +23,7 @@ import com.example.idan.lungupfinal.NotificationReciever;
 import com.example.idan.lungupfinal.R;
 import com.example.idan.lungupfinal.SpinnerGame;
 import com.example.idan.lungupfinal.soundmeter.HitGameActivity;
+import com.example.idan.lungupfinal.soundmeter.SpinActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -80,6 +81,7 @@ public class PatientMenuActivity extends AppCompatActivity {
         });
 
         initialPTmenu();
+
     }
 
 
@@ -117,7 +119,7 @@ public class PatientMenuActivity extends AppCompatActivity {
         findViewById(R.id.btn_perform_exercise_ptm).setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                // Intent intent = new Intent(PatientMenuActivity.this, SpinnerGame.class);
-                Intent intent = new Intent(PatientMenuActivity.this,HitGameActivity.class);
+                Intent intent = new Intent(PatientMenuActivity.this,SpinnerGame.class);
                 startActivity(intent);
             }
         });

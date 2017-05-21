@@ -4,6 +4,10 @@ package com.example.idan.lungupfinal.soundmeter;
  * Created by Idan on 14/11/2016.
  */
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +15,11 @@ import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewPropertyAnimator;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -47,6 +56,10 @@ public class SpinActivity extends AppCompatActivity {
             }
         }
     };
+
+    private ViewPropertyAnimator mAnimation;
+    private boolean isAnimationRunning;
+
     private void testDone() {
 
         onBackPressed();
@@ -64,6 +77,33 @@ public class SpinActivity extends AppCompatActivity {
 //        tmp = msp.getStringFromSharedPrefernces("rec5", "na");
 //        userInitialValue= HitGameActivity.calculateMicValues(tmp);
 
+
+        findViewById(R.id.btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!isAnimationRunning) {
+                    startRotationAnimation();
+                    //isAnimationRunning = true;
+                } else {
+                    isAnimationRunning = false;
+
+                    mAnimation.cancel();
+                }
+            }
+        });
+//        findViewById(R.id.btn).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (isAnimationRunning) {
+//                    mAnimation.cancel();
+//                    isAnimationRunning = false;
+//                } else {
+//                    startRotationAnimation();
+//                }
+//            }
+//        });
+
+       // startRotationAnimation();
         userInitialValue = msp.getIntFromSharedPrefernces("MIC_INIT_VALUE", -1);
         userInitialTime = msp.getLongFromSharedPreferences("MIC_INIT_DATE",-1);
         if (userInitialValue!=-1){
@@ -91,7 +131,7 @@ public class SpinActivity extends AppCompatActivity {
                     sum_db=0;
                 }
                 progressBar.setProgress(400-delay);
-                imgview.setRotation((float) ++i2);
+               // imgview.setRotation((float) ++i2);
             }
         };
         m_handlerTask.run();
@@ -106,6 +146,20 @@ public class SpinActivity extends AppCompatActivity {
         Recorder.getInstance(SpinActivity.this).setRecorderUpdateListener(recorderUpdateListener);
         startTest();
         setVolumeControlStream(3);
+
+    }
+
+    private void startRotationAnimation() {
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                isAnimationRunning = true;
+                mAnimation = imgview.animate().rotationBy(360).withEndAction(this).setDuration(1000).setInterpolator(new LinearInterpolator());
+                mAnimation.start();
+            }
+        };
+
+        imgview.animate().rotationBy(360).withEndAction(runnable).setDuration(1000).setInterpolator(new LinearInterpolator()).start();
 
     }
 

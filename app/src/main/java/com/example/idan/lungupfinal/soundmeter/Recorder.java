@@ -95,13 +95,10 @@ public class Recorder {
     {
         float f1 = mMediaRecorder.getMaxAmplitude();
         float f2 = 0;
-
-
         if (f1 > 0.0F)
         {
             f2 =f1;
         }
-
         if (mRecorderUpdateListener != null) {
             mRecorderUpdateListener.onSoundUpdate(f2);
         }
