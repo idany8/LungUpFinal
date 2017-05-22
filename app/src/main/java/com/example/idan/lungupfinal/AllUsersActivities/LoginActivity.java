@@ -61,7 +61,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         // Buttons
         mRegisterTv.setOnClickListener(this);
         mLoginBtn.setOnClickListener(this);
-        //findViewById(R.id.btn_login_signup).setOnClickListener(this);
+
         findViewById(R.id.btn_qr_scan).setOnClickListener(this);
         // findViewById(R.id.verify_email_button).setOnClickListener(this);
 
@@ -86,9 +86,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
-//// https://github.com/firebase/quickstart-android/blob/master/auth/app/src/main/java/com/google/firebase/quickstart/auth/EmailPasswordActivity.java
-//
-//        }
+
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);

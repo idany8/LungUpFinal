@@ -248,7 +248,7 @@ public class PatientDetailedPerformance extends AppCompatActivity {
     }
 
     private void initBarChart(ArrayList<BarEntry> entries,ArrayList<String> xVals ) {
-        BarDataSet dataset = new BarDataSet(entries, "Usages number");
+        BarDataSet dataset = new BarDataSet(entries, "Usages amount");
         BarData data = new BarData(xVals, dataset);
         barChart.setData(data);
         barChart.setVisibleXRangeMaximum(10L);

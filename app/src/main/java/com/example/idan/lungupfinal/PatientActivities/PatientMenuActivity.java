@@ -162,8 +162,8 @@ public class PatientMenuActivity extends AppCompatActivity {
                         BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
                         Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
                         qr_assign_btn.setImageBitmap(bitmap);
-                        Toast.makeText(PatientMenuActivity.this, "ok",
-                                Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(PatientMenuActivity.this, "ok",
+//                                Toast.LENGTH_SHORT).show();
 
                     } catch (WriterException e) {
                         e.printStackTrace();

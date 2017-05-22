@@ -20,30 +20,31 @@
         android:textSize="18dp"
         android:textColor="#2d3863"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="6dp" />
 
-    <ListView xmlns:android="http://schemas.android.com/apk/res/android"
+    <ListView
         android:id="@+id/det_per_lv"
         android:layout_width="fill_parent"
-        android:layout_height="100dp"
-        android:padding="10dp"
+        android:layout_height="80dp"
+        android:padding="5dp"
+        android:layout_weight="4"
 
      >
     </ListView>
 
     <com.github.mikephil.charting.charts.BarChart
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="200dp"
+        android:layout_weight="2"
         android:id="@+id/det_per_barchart"></com.github.mikephil.charting.charts.BarChart>
 
     <com.github.mikephil.charting.charts.LineChart
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="2"
         android:id="@+id/det_per_lineChart"></com.github.mikephil.charting.charts.LineChart>
-
-
 
 
 </LinearLayout>

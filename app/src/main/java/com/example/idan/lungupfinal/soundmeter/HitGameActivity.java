@@ -24,12 +24,21 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.idan.lungupfinal.Classes.P_Exercise;
+import com.example.idan.lungupfinal.Classes.PerfUnit;
 import com.example.idan.lungupfinal.R;
 import com.example.idan.lungupfinal.Classes.MySharedPreferences;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.liulishuo.magicprogresswidget.MagicProgressCircle;
+
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class HitGameActivity extends AppCompatActivity {
 
@@ -54,6 +63,9 @@ public class HitGameActivity extends AppCompatActivity {
     int score=0;
     String uName= FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
     DatabaseReference myRef;
+    P_Exercise pexToPerform;
+    private FirebaseAuth mAuth;
+    private ArrayList<P_Exercise> patArrPex;
 
     private Runnable mUpdateTimer = new Runnable() {
         @Override
@@ -72,7 +84,37 @@ public class HitGameActivity extends AppCompatActivity {
     };
 
     private void gameDone() {
-        Recorder.getInstance(HitGameActivity.this).saveData(0,0,score); // change to the right scores
+        //Recorder.getInstance(HitGameActivity.this).saveData(0,0,score); // change to the right scores
+
+
+        pexToPerform = new P_Exercise();
+        patArrPex = new ArrayList<P_Exercise>();
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getCurrentUser().getUid()).child("p_exercises").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    P_Exercise item = child.getValue(P_Exercise.class);
+                    Log.d("checkPex", "" + item);
+                    if (item.getId()== 100){
+                        pexToPerform = item;
+                    }else patArrPex.add(item);
+                }
+                pexToPerform.addRecords(new PerfUnit(System.currentTimeMillis(),Double.parseDouble(txt_score.getText().toString()),pexToPerform.getExercise_name()));
+                patArrPex.add(pexToPerform);
+                FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getCurrentUser().getUid()).child("p_exercises").setValue(patArrPex);
+                Toast.makeText(HitGameActivity.this, "Your Score is:"+ txt_score.getText().toString(), Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d("checkPex", "rrrrr");
+            }
+
+        });
+
         //ScoreUnit su = new ScoreUnit(score, uName);
        // myRef.push().setValue(su);
         onBackPressed();
@@ -171,55 +213,41 @@ private void startGame(final RelativeLayout container){
         set.setDuration(SECONDS_TO_TEST*1000);
         set.setInterpolator(new AccelerateInterpolator());
         set.start();
-        blueBall = createBlueBallView();
+
+
+int timing =300;
+    for (int i=0;i<3;i++) {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                View first = createRedBallView(false, getRandomImage());
+                View second = createRedBallView(true,getRandomImage());
+                View third = createRedBallView(true, false,getRandomImage());
+                container.addView(first);
+                container.addView(second);
+                container.addView(third);
+                startTranslateAnimationX(first);
+                startTranslateAnimationY(second);
+                startTranslateAnimationXY(third);
+            }
+        }, timing);
+    timing+=1400;
+    }
+
+
+
+
+    blueBall = createBlueBallView();
         container.addView(blueBall);
-        View redBall1 = createRedBallView(false);
-        container.addView(redBall1);
-        startTranslateAnimationX(redBall1);
 
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-
-                startTranslateAnimationX(blueBall);
-            }
-        }, 600);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                View redBall2 = createRedBallView(false);
-                container.addView(redBall2);
-                startTranslateAnimationX(redBall2);
-            }
-        }, 1200);
 
     new Handler().postDelayed(new Runnable() {
         @Override
         public void run() {
-            View redBall2 = createRedBallView(true, false);
-            container.addView(redBall2);
-            startTranslateAnimationXY(redBall2);
-        }
-    }, 1200);
 
-    new Handler().postDelayed(new Runnable() {
-        @Override
-        public void run() {
-            View redBall2 = createRedBallView(true);
-            container.addView(redBall2);
-            startTranslateAnimationY(redBall2);
+            startTranslateAnimationX(blueBall);
         }
-    }, 1200);
-
-    new Handler().postDelayed(new Runnable() {
-        @Override
-        public void run() {
-            View redBall2 = createRedBallView(true);
-            container.addView(redBall2);
-            startTranslateAnimationY(redBall2);
-        }
-    }, 1600);
+    }, 600);
 
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -227,7 +255,7 @@ private void startGame(final RelativeLayout container){
         IRecorderUpdateListener recorderUpdateListener = new IRecorderUpdateListener() {
             @Override
             public void onSoundUpdate(float value) {
-                Log.d("micInit1",""+value);
+               // Log.d("micInit1",""+value);
                 txt_sound_level.setText(value + " DB");
                 if ((value > userInitialValue)) {
                     checkBall(img_hit, img_miss);
@@ -312,6 +340,18 @@ private void startGame(final RelativeLayout container){
         Recorder.getInstance(HitGameActivity.this).RecorderRel();
     }
 
+    public static int getRandomImage() {
+        ArrayList<Integer> pictures = new ArrayList<Integer>();
+
+        pictures.add(R.drawable.apple);
+        pictures.add(R.drawable.tomato);
+        pictures.add(R.drawable.orange);
+        pictures.add(R.drawable.banana);
+
+        // Get Random Company Name from Arraylist using Random().nextInt()
+        int pic = pictures.get(new Random().nextInt(pictures.size()));
+        return pic;
+    }
     private View createBlueBallView() {
         ImageView imageView = new ImageView(HitGameActivity.this);
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -321,11 +361,11 @@ private void startGame(final RelativeLayout container){
         return imageView;
     }
 
-    private View createRedBallView(boolean forVerticalMovement) {
-        return createRedBallView(false, forVerticalMovement);
+    private View createRedBallView(boolean forVerticalMovement, int res) {
+        return createRedBallView(false, forVerticalMovement, res);
     }
 
-    private View createRedBallView(boolean withoutRules, boolean forVerticalMovement) {
+    private View createRedBallView(boolean withoutRules, boolean forVerticalMovement,int res) {
         ImageView imageView = new ImageView(HitGameActivity.this);
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         if (!withoutRules) {
@@ -336,9 +376,9 @@ private void startGame(final RelativeLayout container){
                 //layoutParams.addRule(RelativeLayout.ALIGN_BOTTOM, RelativeLayout.TRUE);
             }
         }
-
         imageView.setLayoutParams(layoutParams);
-        imageView.setImageResource(R.drawable.banana);
+
+        imageView.setImageResource(res);
         return imageView;
     }
 
@@ -348,13 +388,13 @@ private void startGame(final RelativeLayout container){
 
         ObjectAnimator translationAnimatorY = ObjectAnimator.ofFloat(view,
                 "translationY", 0, mHeight);
-        translationAnimator.setDuration(5000);
+        translationAnimator.setDuration(4400);
         translationAnimator.setRepeatMode(ValueAnimator.REVERSE);
-        translationAnimator.setRepeatCount(20);
+        translationAnimator.setRepeatCount(ValueAnimator.INFINITE);
 
-        translationAnimatorY.setDuration(5000);
+        translationAnimatorY.setDuration(4400);
         translationAnimatorY.setRepeatMode(ValueAnimator.REVERSE);
-        translationAnimatorY.setRepeatCount(20);
+        translationAnimatorY.setRepeatCount(ValueAnimator.INFINITE);
 
 
         AnimatorSet set = new AnimatorSet();
@@ -368,9 +408,12 @@ private void startGame(final RelativeLayout container){
         ObjectAnimator translationAnimator = ObjectAnimator.ofFloat(view,
                 "translationX", 0, mWidth);
 
-        translationAnimator.setDuration(5000);
+        translationAnimator.setDuration(2800);
+        if (view.equals(blueBall)){
+            translationAnimator.setDuration(4000);
+        }
         translationAnimator.setRepeatMode(ValueAnimator.REVERSE);
-        translationAnimator.setRepeatCount(20);
+        translationAnimator.setRepeatCount(ValueAnimator.INFINITE);
         translationAnimator.start();
     }
 
@@ -379,7 +422,7 @@ private void startGame(final RelativeLayout container){
         ObjectAnimator translationAnimator = ObjectAnimator.ofFloat(view,
                 "translationY", 0, mHeight);
 
-        translationAnimator.setDuration(5000);
+        translationAnimator.setDuration(3800);
         translationAnimator.setRepeatMode(ValueAnimator.REVERSE);
         translationAnimator.setRepeatCount(20);
         translationAnimator.start();
