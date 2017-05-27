@@ -127,10 +127,8 @@ public class PatientDetailedPerformance extends AppCompatActivity {
                 lineChart.setVisibility(View.GONE);
 
                 if (pos==0){
-                    createChartsArrays(arrPatLU);
+                    createChartsArrays(arrPatLU,true);
                 }else{
-
-
 
                 ArrayList<PerfUnit> chosenPatLU = new ArrayList<PerfUnit>();
 
@@ -140,7 +138,7 @@ public class PatientDetailedPerformance extends AppCompatActivity {
                         chosenPatLU.add(arrPatLU.get(t));
                     }
                 }
-                createChartsArrays(chosenPatLU);
+                createChartsArrays(chosenPatLU,false);
                 }
 
             }
@@ -161,7 +159,7 @@ public class PatientDetailedPerformance extends AppCompatActivity {
                     initListView(patientPExercises);
                     arrPatLU = getAllRecords(patientPExercises);
                     if (arrPatLU.size()>0)
-                        createChartsArrays(arrPatLU);
+                        createChartsArrays(arrPatLU,true);
                 } else {
                     Log.d("checkerror", "nothing in user EL ");
                     ArrayList<P_Exercise> loggedUsrEL = new ArrayList<P_Exercise>();
@@ -174,7 +172,7 @@ public class PatientDetailedPerformance extends AppCompatActivity {
         });
     }
 
-    private void createChartsArrays(ArrayList<PerfUnit> arrPatLU) {
+    private void createChartsArrays(ArrayList<PerfUnit> arrPatLU, boolean isAll) {
 
         SimpleDateFormat fmt = new SimpleDateFormat("yyyyMMdd");
         SimpleDateFormat fmtToChart = new SimpleDateFormat("dd/MM");
@@ -197,10 +195,11 @@ public class PatientDetailedPerformance extends AppCompatActivity {
 
                 if (fmt.format(d).equals(fmt.format(tmp_d))) {
                     tmpCount++;
-                    tmpScore += tmpScore;
+                    tmpScore += arrPatLU.get(i).getScore();
 
                 } else {
                     //savetmps;
+                    Log.d("daysstamps", "tmpScore" + tmpScore + " | tmpcount"+ tmpCount);
                     scoresEntryList.add(new Entry((tmpScore / tmpCount), dayNumber));
                     xVals.add(dayNumber, String.valueOf(fmtToChart.format(cal.getTime())));
                     entries.add(new BarEntry(tmpCount, dayNumber));
@@ -211,7 +210,9 @@ public class PatientDetailedPerformance extends AppCompatActivity {
                     cal.add(Calendar.DATE, -1);
                     d = cal.getTime();
                     while (!(fmt.format(d).equals(fmt.format(tmp_d)))) {
-                        scoresEntryList.add(new Entry((tmpScore / tmpCount), dayNumber));
+                        Log.d("daysstamps", "tmpScore" + tmpScore + " | tmpcount"+ tmpCount);
+                        //adding emptydays to chars
+                     //   scoresEntryList.add(new Entry((tmpScore / tmpCount), dayNumber));
                         xVals.add(dayNumber, String.valueOf(fmtToChart.format(cal.getTime())));
                         entries.add(new BarEntry(tmpCount, dayNumber));
                         dayNumber++;
@@ -220,17 +221,25 @@ public class PatientDetailedPerformance extends AppCompatActivity {
                         d = cal.getTime();
                     }
                     tmpCount++;
-                    tmpScore += tmpScore;
+                    tmpScore += arrPatLU.get(i).getScore();
+
                 }
             }
+            Log.d("daysstamps", "tmpScore" + tmpScore + " | tmpcount"+ tmpCount);
             scoresEntryList.add(new Entry((tmpScore / tmpCount), dayNumber));
             xVals.add(dayNumber, String.valueOf(fmtToChart.format(cal.getTime())));
             entries.add(new BarEntry(tmpCount, dayNumber));
             dayNumber++;
             Log.d("daysstamps", "count" + tmpCount + " score" + tmpScore + " day" + fmt.format(tmp_d));
 
-            initLineChart(scoresEntryList, xVals);
-            initBarChart(entries, xVals);
+
+            //Log.d("daysstamps", "logentrylist" + scoresEntryList);
+            if (isAll) {
+                initBarChart(entries, xVals);
+            }else {
+                initLineChart(scoresEntryList, xVals);
+                initBarChart(entries, xVals);
+            }
         }
     }
 
@@ -243,7 +252,7 @@ public class PatientDetailedPerformance extends AppCompatActivity {
         data.setDrawValues(false);
         lineChart.setData(data);
 
-        lineChart.setVisibleXRangeMaximum(10);
+        lineChart.setVisibleXRangeMaximum(6);
         lineChart.setVisibility(View.VISIBLE);
     }
 
@@ -251,7 +260,7 @@ public class PatientDetailedPerformance extends AppCompatActivity {
         BarDataSet dataset = new BarDataSet(entries, "Usages amount");
         BarData data = new BarData(xVals, dataset);
         barChart.setData(data);
-        barChart.setVisibleXRangeMaximum(10L);
+        barChart.setVisibleXRangeMaximum(6);
         barChart.setVisibility(View.VISIBLE);
     }
 
@@ -261,6 +270,7 @@ public class PatientDetailedPerformance extends AppCompatActivity {
         for (int i = 0; i < patPExs.size(); i++) {
             arrLU.addAll(patPExs.get(i).getRecords());
         }
+        Log.d("daysstamps", " arrLU: " +arrLU );
 
         Collections.sort(arrLU, new Comparator<PerfUnit>() {
             @Override
@@ -268,6 +278,7 @@ public class PatientDetailedPerformance extends AppCompatActivity {
                 return (int) (pf2.getTime() - pf1.getTime());
             }
         });
+        Log.d("daysstamps", " arrLU After: " +arrLU );
         return arrLU;
 
     }
