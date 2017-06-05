@@ -59,7 +59,8 @@
 
         <receiver android:name=".NotificationReciever" />
 
-        <activity android:name=".AllUsersActivities.PatientDetailedPerformance"></activity>
+        <activity android:name=".AllUsersActivities.PatientDetailedPerformance" />
+        <activity android:name=".AllUsersActivities.FamMenuActivity"></activity>
     </application>
 
 </manifest>

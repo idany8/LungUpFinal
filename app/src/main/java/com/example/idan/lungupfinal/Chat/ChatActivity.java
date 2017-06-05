@@ -1,5 +1,6 @@
 package com.example.idan.lungupfinal.Chat;
 
+import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,7 +12,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.idan.lungupfinal.AllUsersActivities.LoginActivity;
 import com.example.idan.lungupfinal.Classes.Notification;
+import com.example.idan.lungupfinal.Classes.Patient;
 import com.example.idan.lungupfinal.R;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 
@@ -38,7 +41,8 @@ public class ChatActivity extends AppCompatActivity {
     private String currentUserName;
     private String currentRecevierId;
     private String receiverToken=null;
-
+    private FirebaseAuth mAuthLoggedUser;
+    private TextView mUsrName;
 
 
     public static class MessageViewHolder extends RecyclerView.ViewHolder {
@@ -89,23 +93,38 @@ public class ChatActivity extends AppCompatActivity {
             chatId = extras.getString("chatId");
             currentRecevierId = chatId;
         }
+
+
+        mAuthLoggedUser = FirebaseAuth.getInstance();
+
+        mUsrName= (TextView)findViewById(R.id.user_name_tv);
+
+        findViewById(R.id.button_logout).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                mAuthLoggedUser.signOut();
+                Intent intent = new Intent(ChatActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+        FirebaseDatabase.getInstance().getReference().child("users").child(mAuthLoggedUser.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Patient loggedPat = dataSnapshot.getValue(Patient.class);
+                mUsrName.setText(loggedPat.getName());
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+
+        });
+
+
+
         getCurrentUserName();
         ref = FirebaseDatabase.getInstance().getReference();
 
-        //get data from activity
-        //getRecieverToken(chatId);
 
-//        FirebaseDatabase.getInstance().getReference().child("users").child(chatId).addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                setTitle("Chat with " + ((String) dataSnapshot.child("name").getValue()).split(" ")[0]);
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
         FirebaseDatabase.getInstance().getReference().child("users").child(chatId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

@@ -2,7 +2,9 @@ package com.example.idan.lungupfinal.AllUsersActivities;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -104,30 +106,44 @@ public class SettingsActivity extends AppCompatActivity {
 
 
     private void initSettings() {
-
-
         userName = (TextView) findViewById(R.id.sett_header_user_name);
-
         userName.setText(curPat.getName());
 
-        findViewById(R.id.sett_init).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(SettingsActivity.this, InitActivity.class);
-                startActivity(intent);
-            }
-        });
-
-
-        initLastTime = (TextView) findViewById(R.id.sett_init_last);
-
-        if (initDate==-1){
-            initLastTime.setText("Never initialized");
-        }else{
-            initLastTime.setText(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(initDate));
-        }
-
         initAlarmNotification();
+
+        if (curPat.getType().equals("PT")) {
+            findViewById(R.id.sett_init).setVisibility(View.VISIBLE);
+            findViewById(R.id.sett_init).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(SettingsActivity.this, InitActivity.class);
+                    startActivity(intent);
+                }
+            });
+
+
+            initLastTime = (TextView) findViewById(R.id.sett_init_last);
+            initLastTime.setVisibility(View.VISIBLE);
+            if (initDate == -1) {
+                initLastTime.setText("Never initialized");
+            } else {
+                initLastTime.setText(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(initDate));
+            }
+
+            findViewById(R.id.btn_switch_to_fam).setVisibility(View.VISIBLE);
+            findViewById(R.id.btn_switch_to_fam).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    alertDialogSwitch();
+//                    curPat.setType("FAM");
+//                    FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getCurrentUser().getUid().toString()).setValue(curPat);
+//                    Intent intent = new Intent(SettingsActivity.this, FamMenuActivity.class);
+//                    startActivity(intent);
+                }
+            });
+
+        }
 
     }
 
@@ -176,10 +192,10 @@ public class SettingsActivity extends AppCompatActivity {
 
         alarmManager.cancel(pendingIntent);
 
-        msp.putBooleanIntoSharedPrefernces("ALARM_SET",true);
+        msp.putBooleanIntoSharedPrefernces("ALARM_SET",false);
         msp.putStringIntoSharedPrefernces("ALARM_TIME","~~~~~");
         alarmTime.setText("~~~~~");
-
+        switch_not.setChecked(false);
         Log.d("alarmLog", "canceled alaram");
     }
 
@@ -204,4 +220,42 @@ public class SettingsActivity extends AppCompatActivity {
 
     }
 
+    void alertDialogSwitch()
+    {
+        new AlertDialog.Builder(this)
+                .setTitle("Are you sure?")
+                .setMessage("If you really want to become a watcher of specific patient click ok.\n" +
+                        "In watcher mode you won't be able to perform exercises by yourself.")
+                  .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                      public void onClick(DialogInterface dialoginterface, int i) {
+                          dialoginterface.cancel();
+                      }})
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (curPat.getRelatedUsers().size() > 0) {
+                            errorDialog();
+                        } else {
+                            curPat.setType("FAM");
+                            FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getCurrentUser().getUid().toString()).setValue(curPat);
+                            Intent intent = new Intent(SettingsActivity.this, FamMenuActivity.class);
+                            startActivity(intent);
+                        }
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
+    void errorDialog()
+    {
+        new AlertDialog.Builder(this)
+                .setTitle("Error")
+                .setMessage("You already have assigned users, this operation canot be completed.\n" +
+                        "Create new account for watching specific patient.")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
 }

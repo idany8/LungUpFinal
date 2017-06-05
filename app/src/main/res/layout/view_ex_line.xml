@@ -25,6 +25,7 @@
         android:id="@+id/genre"
         android:layout_below="@id/title"
         android:text="jlsadhjk"
+        android:paddingRight="50dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
@@ -33,6 +34,7 @@
         android:text="dlksah"
         android:layout_width="wrap_content"
         android:layout_below="@id/genre"
+        android:paddingRight="50dp"
         android:layout_height="wrap_content" />
 
     <ImageView

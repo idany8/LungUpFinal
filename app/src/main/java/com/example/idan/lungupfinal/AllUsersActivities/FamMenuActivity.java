@@ -1,20 +1,26 @@
-package com.example.idan.lungupfinal.CageGiverActivities;
+package com.example.idan.lungupfinal.AllUsersActivities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.idan.lungupfinal.AllUsersActivities.FamMenuActivity;
-import com.example.idan.lungupfinal.AllUsersActivities.SettingsActivity;
+import com.example.idan.lungupfinal.Adapters.MyAdapter;
+import com.example.idan.lungupfinal.CageGiverActivities.AssignedUsersActivity;
+import com.example.idan.lungupfinal.CageGiverActivities.CreateNewExerciseActivity;
+import com.example.idan.lungupfinal.CageGiverActivities.CreateNewPatient;
+import com.example.idan.lungupfinal.CageGiverActivities.PatientSumActivity;
 import com.example.idan.lungupfinal.Chat.Chat;
 import com.example.idan.lungupfinal.Chat.ChatListActivity;
 import com.example.idan.lungupfinal.AllUsersActivities.LoginActivity;
 import com.example.idan.lungupfinal.Classes.Exercise;
 import com.example.idan.lungupfinal.Classes.Patient;
+import com.example.idan.lungupfinal.PatientActivities.PatientMenuActivity;
 import com.example.idan.lungupfinal.R;
 import com.example.idan.lungupfinal.Classes.User;
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,16 +35,18 @@ import com.google.zxing.integration.android.IntentResult;
 
 import java.util.ArrayList;
 
-public class CaregiverMenuActivity extends AppCompatActivity implements View.OnClickListener {
+public class FamMenuActivity extends AppCompatActivity implements View.OnClickListener {
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
     private ArrayList<String> usersList;
     private TextView usr_name;
     private User current_user;
+    private String patUid;
+    private boolean patAssigned=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_caregivers_menu);
+        setContentView(R.layout.activity_fam_menu);
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
         usr_name = (TextView) findViewById(R.id.user_name_tv);
@@ -50,58 +58,66 @@ public class CaregiverMenuActivity extends AppCompatActivity implements View.OnC
                 current_user = dataSnapshot.getValue(User.class);
                 Log.d("usersdata", "" + current_user.getName());
                 usr_name.setText(current_user.getName());
+                if (current_user.getRelatedUsers().size()!=0) {
+                    patUid = current_user.getRelatedUsers().get(0);
+                    patAssigned=true;
+                }
+
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
         });
-       initAnimatedGames();
 
-        findViewById(R.id.btn_assigned_ptns_cgmenu).setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                Intent intent = new Intent(CaregiverMenuActivity.this, AssignedUsersActivity.class);
-                startActivity(intent);
-            }
-        });
-        findViewById(R.id.btn_create_npat_cgmenu).setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                Intent intent = new Intent(CaregiverMenuActivity.this, CreateNewPatient.class);
-                startActivity(intent);
-            }
-        });
-        findViewById(R.id.btn_create_ex_cgmenu).setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                Intent intent = new Intent(CaregiverMenuActivity.this, CreateNewExerciseActivity.class);
-                startActivity(intent);
-            }
-        });
+
         findViewById(R.id.button_logout).setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 mAuth.signOut();
-                Intent intent = new Intent(CaregiverMenuActivity.this, LoginActivity.class);
+                Intent intent = new Intent(FamMenuActivity.this, LoginActivity.class);
                 startActivity(intent);
             }
         });
 
-
-        findViewById(R.id.btn_messages_cgmenu).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.btn_messages_famm).setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Intent intent = new Intent(CaregiverMenuActivity.this, ChatListActivity.class);
-                startActivity(intent);
-
-            }
-
-        });
-        findViewById(R.id.btn_settings_cgmenu).setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                    Intent intent = new Intent(CaregiverMenuActivity.this, SettingsActivity.class);
+                if (patAssigned){
+                    Intent intent = new Intent(FamMenuActivity.this, ChatListActivity.class);
                     startActivity(intent);
+                }else alertDialog();
 
+            }
+
+        });
+
+        findViewById(R.id.btn_assign_qr_ptn_famm).setOnClickListener((View.OnClickListener) this);
+        findViewById(R.id.btn_settings_famm).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+
+                if (patAssigned){
+                    Intent intent = new Intent(FamMenuActivity.this, SettingsActivity.class);
+                    startActivity(intent);
+                }else alertDialog();
+
+//                Intent i = new Intent(FamMenuActivity.this, SettingsActivity.class);
+//                i.putExtra("PATIENT_UID", mAuth.getCurrentUser().getUid()); /////// change
+//                startActivity(i);
             }
         });
 
-        findViewById(R.id.btn_assign_qr_ptn_cgmenu).setOnClickListener((View.OnClickListener) this);
+        findViewById(R.id.btn_performance_famm).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+//                Intent intent = new Intent(FamMenuActivity.this, PatientDetailedPerformance.class);
+//                startActivity(intent);
+                if (patAssigned){
+                    Intent i = new Intent(FamMenuActivity.this, PatientDetailedPerformance.class);
+                    i.putExtra("PATIENT_UID", patUid);
+                    startActivity(i);
+                }else alertDialog();
+
+
+            }
+        });
 
 
     }
@@ -127,7 +143,7 @@ public class CaregiverMenuActivity extends AppCompatActivity implements View.OnC
     }
     public void onClick(View view) {
         int i = view.getId();
-        if (i== R.id.btn_assign_qr_ptn_cgmenu){
+        if (i== R.id.btn_assign_qr_ptn_famm){
             IntentIntegrator integrator = new IntentIntegrator(this);
             integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);
             integrator.setPrompt("Scan");
@@ -137,27 +153,7 @@ public class CaregiverMenuActivity extends AppCompatActivity implements View.OnC
             integrator.initiateScan();
         }
     }
-    private void initAnimatedGames() {
-        Exercise hit = new Exercise(100,"game","Shooting Game",getResources().getString(R.string.hit_desc),"","","",false);
-        DatabaseReference newRef = mDatabase.child("exercises").push();
-        newRef.setValue(hit);
 
-        Exercise spinner = new Exercise(101,"game","WindVane Game",getResources().getString(R.string.spinner_desc),"","","",false);
-        newRef = mDatabase.child("exercises").push();
-        newRef.setValue(spinner);
-    }
-    public User parseData(DataSnapshot dataSnapshot) {
-        User user = new User();
-
-        for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
-            if (userSnapshot.getKey().equals("email")) {
-                user.setEmail((String) userSnapshot.getValue());
-            }
-            System.out.println(userSnapshot.getKey() + ": " + userSnapshot.getValue());
-
-        }
-        return user;
-    }
     public void assignUsers(String uid1, String uid2){
         final String firstUid = uid1;
         final String secondUid = uid2;
@@ -167,15 +163,16 @@ public class CaregiverMenuActivity extends AppCompatActivity implements View.OnC
                 Patient user1= dataSnapshot.getValue(Patient.class);
                 ArrayList<String> uid1RU = user1.getRelatedUsers();
                 if (uid1RU.contains(secondUid)){
-                    Toast.makeText(CaregiverMenuActivity.this, "Users already assigned", Toast.LENGTH_LONG).show();
+                    Toast.makeText(FamMenuActivity.this, "Users already assigned", Toast.LENGTH_LONG).show();
                 }else{
                     uid1RU.add(secondUid);
                     user1.setRelatedUsers(uid1RU);
                     FirebaseDatabase.getInstance().getReference().child("users").child(firstUid).setValue(user1);
 
                     FirebaseDatabase.getInstance().getReference().child("chats").child(secondUid).child(firstUid).setValue(new Chat(user1.getName()));
+                    patAssigned=true;
                 }
-                            }
+            }
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
@@ -203,53 +200,19 @@ public class CaregiverMenuActivity extends AppCompatActivity implements View.OnC
 
     }
 
-//    public ArrayList<User> getRelatedUsersList(ArrayList<String> users_id, DatabaseReference mDatabase)
-//    {
-////        final ArrayList<User> ruList= new ArrayList<User>();
-////        for (String tmpUid:users_id) {
-////            mDatabase.child("users").child(tmpUid).addListenerForSingleValueEvent(new ValueEventListener() {
-////                @Override
-////                public void onDataChange(DataSnapshot dataSnapshot) {
-////                    User user = dataSnapshot.getValue(User.class);
-////                    Log.d("usersdata3", "" + user.getName());
-////                    Log.d("usersdata4", "" + user.getRelatedUsers());
-////                    ruList.add(user);
-////                    Log.d("rulist", "" + ruList);
-////
-//////                                    ArrayList<User> test = getRelatedUsersList(user.getRelatedUsers(), mDatabase);
-//////                                    Log.d("userstest", "" + test);
-////                }
-////
-////                @Override
-////                public void onCancelled(DatabaseError databaseError) {
-////
-////                }
-////            });
-////        }
-////        return ruList;
-//
-//       //FirebaseDatabase.getInstance().getReference()
-//
-//
-//
-//
-//       // final ArrayList<User> ruList= new ArrayList<User>();
-//
-////       // for (String userUid : users_id)
-////        //{
-////            mDatabase.child("users").child("HKdpZb3Hh7NN68t1NWDLfeP2jIB2").addListenerForSingleValueEvent(new ValueEventListener() {
-////                @Override
-////                public void onDataChange(DataSnapshot dataSnapshot) {
-////                    User user= dataSnapshot.getValue(User.class);
-////                    ruList.add(user);
-////                }
-////
-////                @Override
-////                public void onCancelled(DatabaseError databaseError) {
-////
-////                }
-////            });
-////        //}
-//    return ruList;
-//    }
+
+
+    void alertDialog()
+    {
+        new AlertDialog.Builder(this)
+                .setTitle("Assigned Patient Error")
+                .setMessage("You have no assigned patient yet,\n" +
+                        "Please click on Assign Patient button and scan patient QR code.")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
 }

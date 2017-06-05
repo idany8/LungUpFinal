@@ -16,7 +16,7 @@
         android:id="@+id/user_name_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="User Name"
+        android:text=""
         android:fontFamily="sans-serif"
         android:textColor="#2d3863"
         android:layout_alignParentRight="true"

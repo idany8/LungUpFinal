@@ -43,7 +43,7 @@ public class NotificationReciever extends BroadcastReceiver {
 //                PatientMenuActivity.checkForTodayExercises(loggedUsrEL);
 //
                 if (PatientMenuActivity.havePlannedExercisesToday(loggedUsrEL)) {
-                    sendNotification(context, current_user.getName(), "You have scheduled exercises for today!");
+                    sendNotification(context, current_user.getName(), "There are scheduled exercises for today!");
                 }
             }
             @Override

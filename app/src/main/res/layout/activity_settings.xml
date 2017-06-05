@@ -34,6 +34,7 @@
         android:textSize="16dp"
         android:textColor="#5668b5"
         android:layout_marginLeft="10dp"
+        android:visibility="gone"
         />
 
     <TextView
@@ -46,6 +47,7 @@
         android:layout_marginLeft="20dp"
         android:textColor="#5668b5"
         android:layout_gravity="left"
+        android:visibility="gone"
          />
 
 
@@ -105,7 +107,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:text="Pick the time and press save button"
+            android:text="Pick the requested daily time and click on Save"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TimePicker
@@ -125,6 +127,15 @@
 
 
     </LinearLayout>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_switch_to_fam"
+        android:background="@null"
+        android:src="@drawable/btnswitchfam"
+        android:layout_gravity="center_horizontal"
+        android:visibility="gone"/>
 
 
 

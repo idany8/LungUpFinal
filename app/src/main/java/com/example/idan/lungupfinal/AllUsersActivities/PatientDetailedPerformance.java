@@ -2,13 +2,18 @@ package com.example.idan.lungupfinal.AllUsersActivities;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.idan.lungupfinal.Classes.P_Exercise;
 import com.example.idan.lungupfinal.Classes.Patient;
 import com.example.idan.lungupfinal.Classes.PerfUnit;
-import com.example.idan.lungupfinal.PatientActivities.PatientExercisesList;
 import com.example.idan.lungupfinal.R;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
@@ -24,16 +29,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -55,6 +50,7 @@ public class PatientDetailedPerformance extends AppCompatActivity {
     private TextView mUsrName;
     private FirebaseAuth mAuthLoggedUser;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,7 +61,6 @@ public class PatientDetailedPerformance extends AppCompatActivity {
         mUsrName= (TextView)findViewById(R.id.user_name_tv);
         exercisesLv = (ListView) findViewById(R.id.det_per_lv);
         exercisesLv.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-
         lineChart.setVisibility(View.GONE);
         barChart.setVisibility(View.GONE);
 
@@ -76,11 +71,13 @@ public class PatientDetailedPerformance extends AppCompatActivity {
 
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
-            if (extras == null) {
-                patUid = mAuthLoggedUser.getCurrentUser().getUid();
-                Log.d("starting App", "get patUid from fb");
-            } else {
+            if (extras != null) {
                 patUid = extras.getString("PATIENT_UID");
+                Log.d("checkExtras", "get from extras");
+            } else {
+                patUid = mAuthLoggedUser.getCurrentUser().getUid();
+                Log.d("checkExtras", "get patUid from fb");
+
             }
         }
 
@@ -148,7 +145,7 @@ public class PatientDetailedPerformance extends AppCompatActivity {
 
     private void getPatientPExercisesList() {
 
-
+        Log.d("checkExtras", patUid);
         FirebaseDatabase.getInstance().getReference().child("users").child(patUid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -234,9 +231,12 @@ public class PatientDetailedPerformance extends AppCompatActivity {
 
 
             //Log.d("daysstamps", "logentrylist" + scoresEntryList);
-            if (isAll) {
+            if (( scoresEntryList.get(0).getVal() == 0) || isAll ) {
                 initBarChart(entries, xVals);
             }else {
+                Log.d("scoresEntry", "list: " + scoresEntryList);
+                Log.d("scoresEntry", "enteries: " + entries);
+
                 initLineChart(scoresEntryList, xVals);
                 initBarChart(entries, xVals);
             }
@@ -251,16 +251,17 @@ public class PatientDetailedPerformance extends AppCompatActivity {
         data.setValueTextSize(9f);
         data.setDrawValues(false);
         lineChart.setData(data);
-
-        lineChart.setVisibleXRangeMaximum(6);
+        lineChart.animateXY(3000,3000);
+        lineChart.setVisibleXRangeMaximum(10);
         lineChart.setVisibility(View.VISIBLE);
     }
 
     private void initBarChart(ArrayList<BarEntry> entries,ArrayList<String> xVals ) {
         BarDataSet dataset = new BarDataSet(entries, "Usages amount");
         BarData data = new BarData(xVals, dataset);
+        barChart.animateY(3000);
         barChart.setData(data);
-        barChart.setVisibleXRangeMaximum(6);
+        barChart.setVisibleXRangeMaximum(10);
         barChart.setVisibility(View.VISIBLE);
     }
 

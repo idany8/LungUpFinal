@@ -212,7 +212,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     Intent intent = new Intent(LoginActivity.this, CaregiverMenuActivity.class);
                     startActivity(intent);
 
-                }else {   // *****should check other types
+                }
+                else if (userType.equals("FAM")) {
+                    Intent intent = new Intent(LoginActivity.this, FamMenuActivity.class);
+                    startActivity(intent);
+                }
+                else {   // *****should check other types
                     Intent intent = new Intent(LoginActivity.this, PatientMenuActivity.class);
                     startActivity(intent);
                 }

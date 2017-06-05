@@ -9,11 +9,16 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.idan.lungupfinal.AllUsersActivities.LoginActivity;
+import com.example.idan.lungupfinal.Classes.Patient;
 import com.example.idan.lungupfinal.R;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import java.text.SimpleDateFormat;
@@ -24,6 +29,8 @@ public class ChatListActivity extends AppCompatActivity {
     private RecyclerView chatRecyclerView;
     private LinearLayoutManager linearLayoutManager;
     private DatabaseReference ref;
+    private FirebaseAuth mAuthLoggedUser;
+    private TextView mUsrName;
 
     public static class ChatViewHolder extends RecyclerView.ViewHolder {
         public TextView chatName;
@@ -51,7 +58,34 @@ public class ChatListActivity extends AppCompatActivity {
         chatRecyclerView = (RecyclerView) findViewById(R.id.chat_list_recycler_view);
         linearLayoutManager = new LinearLayoutManager(this);
         //emptyView = (LinearLayout)view.findViewById(R.id.empty_view);
+
+        mAuthLoggedUser = FirebaseAuth.getInstance();
+        mUsrName= (TextView)findViewById(R.id.user_name_tv);
+
+        findViewById(R.id.button_logout).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                mAuthLoggedUser.signOut();
+                Intent intent = new Intent(ChatListActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+        FirebaseDatabase.getInstance().getReference().child("users").child(mAuthLoggedUser.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Patient loggedPat = dataSnapshot.getValue(Patient.class);
+                mUsrName.setText(loggedPat.getName());
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+
+        });
+
+
         ref = FirebaseDatabase.getInstance().getReference();
+
+
 
         DatabaseReference userRef = ref.child(CHATS + FirebaseAuth.getInstance().getCurrentUser().getUid());
 
