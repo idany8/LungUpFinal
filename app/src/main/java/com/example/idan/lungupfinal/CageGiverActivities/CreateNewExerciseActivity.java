@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -30,8 +31,8 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 public class CreateNewExerciseActivity extends AppCompatActivity {
-    private Button mUploadImage;
-    private Button mSubmit;
+    private ImageButton mUploadImage;
+    private ImageButton mSubmit;
     private EditText mExersiceName, mDescription;
     private RadioGroup mRadioGroup;
     private RadioButton mRbPublic,mRbprivate;
@@ -54,8 +55,8 @@ public class CreateNewExerciseActivity extends AppCompatActivity {
         mRbprivate = (RadioButton) findViewById(R.id.rb_nExercise_private);
         mRbPublic = (RadioButton) findViewById(R.id.rb_nExercise_public);
         mRbPublic.setChecked(true);
-        mUploadImage = (Button) findViewById(R.id.btn_nExercise_uploadImage);
-        mSubmit = (Button) findViewById(R.id.btn_nExercise_submit);
+        mUploadImage = (ImageButton) findViewById(R.id.btn_nExercise_uploadImage);
+        mSubmit = (ImageButton) findViewById(R.id.btn_nExercise_submit);
         mExersiceName = (EditText) findViewById(R.id.et_nExercise_name);
         mDescription = (EditText) findViewById(R.id.et_nExercise_Description);
         pbar = (ProgressBar)findViewById(R.id.progressBar2);
@@ -98,6 +99,7 @@ public class CreateNewExerciseActivity extends AppCompatActivity {
                         imagePath,mAuth.getCurrentUser().getEmail(),mAuth.getCurrentUser().getUid(),isPrivate);
 
                 FirebaseDatabase.getInstance().getReference().child("exercises").push().setValue(newExercise);
+                onBackPressed();
 
             }
         });
@@ -127,9 +129,12 @@ public class CreateNewExerciseActivity extends AppCompatActivity {
             filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Uri downloadUri = taskSnapshot.getDownloadUrl();
+                    imagePath=downloadUri.toString();
+
                     pbar.setVisibility(View.GONE);
-                    imagePath=filepath.toString();
-                    mUploadImage.setText("Done");
+                   // imagePath=filepath.toString();
+                    mUploadImage.setImageResource(R.drawable.btn_upload_media_v);
 
                 }
             }).addOnFailureListener(new OnFailureListener() {

@@ -84,6 +84,7 @@ public class SpinnerGame extends AppCompatActivity {
         checkMicPermission();
         initScreen();
         startRotationAnimation();
+
         MySharedPreferences msp = new MySharedPreferences(this);
         userInitialValue = msp.getIntFromSharedPrefernces("MIC_INIT_VALUE", -1);
         userInitialTime = msp.getLongFromSharedPreferences("MIC_INIT_DATE",-1);
@@ -229,6 +230,12 @@ public class SpinnerGame extends AppCompatActivity {
  //       btnStart = (Button) findViewById(R.id.spn_btn_start);
         mCancelBtn = (ImageButton) findViewById(R.id.spn_btn_cancel);
         mDoneBtn = (ImageButton) findViewById(R.id.spn_btn_done);
+        mCancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
         mDoneBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -249,6 +256,7 @@ public class SpinnerGame extends AppCompatActivity {
                         pexToPerform.addRecords(new PerfUnit(System.currentTimeMillis(),avgValue,pexToPerform.getExercise_name()));
                         patArrPex.add(pexToPerform);
                         FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getCurrentUser().getUid()).child("p_exercises").setValue(patArrPex);
+                        onBackPressed();
 
                     }
 

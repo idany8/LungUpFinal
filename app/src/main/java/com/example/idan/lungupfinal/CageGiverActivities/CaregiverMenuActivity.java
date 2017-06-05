@@ -50,13 +50,17 @@ public class CaregiverMenuActivity extends AppCompatActivity implements View.OnC
                 current_user = dataSnapshot.getValue(User.class);
                 Log.d("usersdata", "" + current_user.getName());
                 usr_name.setText(current_user.getName());
+                if (!current_user.isInitialized()){
+                    initAnimatedGames();
+                }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
         });
-       initAnimatedGames();
+
+
 
         findViewById(R.id.btn_assigned_ptns_cgmenu).setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
@@ -145,19 +149,10 @@ public class CaregiverMenuActivity extends AppCompatActivity implements View.OnC
         Exercise spinner = new Exercise(101,"game","WindVane Game",getResources().getString(R.string.spinner_desc),"","","",false);
         newRef = mDatabase.child("exercises").push();
         newRef.setValue(spinner);
-    }
-    public User parseData(DataSnapshot dataSnapshot) {
-        User user = new User();
 
-        for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
-            if (userSnapshot.getKey().equals("email")) {
-                user.setEmail((String) userSnapshot.getValue());
-            }
-            System.out.println(userSnapshot.getKey() + ": " + userSnapshot.getValue());
-
-        }
-        return user;
+        mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).child("initialized").setValue(true);
     }
+
     public void assignUsers(String uid1, String uid2){
         final String firstUid = uid1;
         final String secondUid = uid2;

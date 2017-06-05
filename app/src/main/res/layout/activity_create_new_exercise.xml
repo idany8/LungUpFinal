@@ -43,9 +43,10 @@
             android:layout_height="match_parent"
             android:layout_marginTop="10dp">
 
-            <Button
-            android:text="Upload Media"
-            android:layout_width="wrap_content"
+            <ImageButton
+                android:background="@null"
+                android:src="@drawable/btn_upload_media"
+                android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/btn_nExercise_uploadImage"
             android:layout_centerHorizontal="true" />
@@ -86,8 +87,9 @@
             />
         </RadioGroup>
 
-        <Button
-            android:text="Submit"
+        <ImageButton
+            android:background="@null"
+            android:src="@drawable/btn_submit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/btn_nExercise_submit"

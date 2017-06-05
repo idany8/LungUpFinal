@@ -115,6 +115,7 @@ public class ExercisesPlanActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 adapter.saveToDB();
+                onBackPressed();
             }
         });
         findViewById(R.id.add_row_btn).setOnClickListener(new View.OnClickListener() {
